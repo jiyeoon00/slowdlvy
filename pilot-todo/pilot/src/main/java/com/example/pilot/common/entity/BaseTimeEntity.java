@@ -1,4 +1,4 @@
-package com.example.pilot.todo.domain;
+package com.example.pilot.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
