@@ -1,6 +1,7 @@
 package com.example.pilot.todo.infrastructure;
 
 import com.example.pilot.todo.domain.Todo;
+import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.domain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,5 +21,10 @@ public class TodoRepositoryImpl implements TodoRepository {
     @Override
     public Optional<Todo> findById(long todoId) {
         return todoDao.findById(todoId);
+    }
+
+    @Override
+    public int updateAllStatus(TodoStatus status) {
+        return todoDao.updateAllStatus(status);
     }
 }

@@ -3,9 +3,13 @@ package com.example.pilot.todo.presentation;
 import com.example.pilot.todo.application.TodoService;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
+import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
+import com.example.pilot.todo.presentation.dto.request.TodoStatusChangeRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
+import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,6 +26,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -55,7 +59,7 @@ class TodoControllerTest {
         given(todoService.save(any(TodoCreateRequestDto.class))).willReturn(responseDto);
 
         mockMvc.perform(post("/todo")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(todoCreateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(todoCreateResponse)));
@@ -64,8 +68,23 @@ class TodoControllerTest {
     @Test
     void 단건_완료_활성화_테스트() throws Exception{
         mockMvc.perform(patch("/todo/{id}/status", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(todoService).changeStatus(any(Long.class));
+    }
+
+    @Test
+    void 전체_완료_활성화_테스트() throws Exception{
+        TodoStatusChangeRequest request = new TodoStatusChangeRequest(TodoStatus.COMPLETE);
+        TodoStatusChangeResponseDto todoStatusChangeResponseDto = new TodoStatusChangeResponseDto(1);
+        TodoStatusChangeResponse response = TodoAssembler.todoStatusChangeResponse(todoStatusChangeResponseDto);
+
+        given(todoService.changeAllTodoStatus(any(TodoStatus.class))).willReturn(todoStatusChangeResponseDto);
+
+        mockMvc.perform(patch("/todo/status")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 }

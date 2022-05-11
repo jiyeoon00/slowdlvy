@@ -3,6 +3,7 @@ package com.example.pilot.todo.application;
 import com.example.pilot.TestEntityFactory;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.domain.repository.TodoRepository;
@@ -56,5 +57,17 @@ class TodoServiceTest {
 
         //then
         assertThat(todo.getStatus()).isEqualTo(TodoStatus.COMPLETE);
+    }
+
+    @Test
+    void 전체_완료_활성화_테스트() throws Exception{
+        //given
+        given(todoRepository.updateAllStatus(any(TodoStatus.class))).willReturn(10);
+
+        //when
+        TodoStatusChangeResponseDto responseDto = todoService.changeAllTodoStatus(TodoStatus.ACTIVE);
+
+        //then
+        assertThat(responseDto.getUpdateCount()).isEqualTo(10);
     }
 }
