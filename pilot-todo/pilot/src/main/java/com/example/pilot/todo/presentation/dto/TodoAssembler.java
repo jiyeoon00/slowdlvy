@@ -1,9 +1,11 @@
 package com.example.pilot.todo.presentation.dto;
 
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
+import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
+import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
 import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
 import lombok.AccessLevel;
@@ -24,5 +26,12 @@ public class TodoAssembler {
 
     public static TodoStatusChangeResponse todoStatusChangeResponse(TodoStatusChangeResponseDto todoStatusChangeResponseDto) {
         return new TodoStatusChangeResponse(todoStatusChangeResponseDto.getUpdateCount());
+    }
+
+    public static TodoUpdateRequestDto todoUpdateRequestDto(long todoId, TodoUpdateRequest todoUpdateRequest) {
+        return TodoUpdateRequestDto.builder()
+                .todoId(todoId)
+                .text(todoUpdateRequest.getText())
+                .build();
     }
 }

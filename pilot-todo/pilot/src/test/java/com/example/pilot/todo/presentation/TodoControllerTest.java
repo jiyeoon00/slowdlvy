@@ -2,12 +2,14 @@ package com.example.pilot.todo.presentation;
 
 import com.example.pilot.todo.application.TodoService;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
+import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoStatusChangeRequest;
+import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
 import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +53,7 @@ class TodoControllerTest {
     }
 
     @Test
-    void 새로운_일정_저장_테스트() throws Exception{
+    void 새로운_Todo_저장_테스트() throws Exception{
         TodoCreateRequest todoCreateRequest = new TodoCreateRequest("test text");
         TodoCreateResponseDto responseDto = TodoCreateResponseDto.builder().id(1L).text(todoCreateRequest.getText()).build();
         TodoCreateResponse todoCreateResponse = TodoAssembler.todoCreateResponse(responseDto);
@@ -86,5 +88,17 @@ class TodoControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    void Todo_내용_변경_테스트() throws Exception{
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest("new text");
+
+        mockMvc.perform(patch("/todo/{id}", 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(todoUpdateRequest)))
+                .andExpect(status().isOk());
+
+        verify(todoService).update(any(TodoUpdateRequestDto.class));
     }
 }

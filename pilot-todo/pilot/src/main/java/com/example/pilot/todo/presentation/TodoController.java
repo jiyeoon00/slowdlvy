@@ -6,6 +6,7 @@ import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseD
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoStatusChangeRequest;
+import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
 import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,11 @@ public class TodoController {
     public TodoCreateResponse todoSave(@RequestBody @Valid TodoCreateRequest todoCreateRequest) {
         TodoCreateRequestDto todoCreateRequestDto = TodoAssembler.todoCreateRequestDto(todoCreateRequest);
         return TodoAssembler.todoCreateResponse(todoService.save(todoCreateRequestDto));
+    }
+
+    @PatchMapping("/{id}")
+    public void todoUpdate(@PathVariable("id") long todoId, @RequestBody @Valid TodoUpdateRequest todoUpdateRequest) {
+        todoService.update(TodoAssembler.todoUpdateRequestDto(todoId, todoUpdateRequest));
     }
 
     @PatchMapping("/{id}/status")

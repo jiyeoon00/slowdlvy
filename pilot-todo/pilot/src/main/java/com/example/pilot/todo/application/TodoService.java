@@ -2,6 +2,7 @@ package com.example.pilot.todo.application;
 
 import com.example.pilot.todo.application.dto.TodoDtoAssembler;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
+import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
@@ -25,12 +26,21 @@ public class TodoService {
     }
 
     public void changeStatus(long todoId) {
-        Todo todo = todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
+        Todo todo = findTodoById(todoId);
         todo.changeStatus();
     }
 
     public TodoStatusChangeResponseDto changeAllTodoStatus(TodoStatus status) {
         int updateCount = todoRepository.updateAllStatus(status);
         return new TodoStatusChangeResponseDto(updateCount);
+    }
+
+    public void update(TodoUpdateRequestDto todoUpdateRequestDto) {
+        Todo todo = findTodoById(todoUpdateRequestDto.getTodoId());
+        todo.update(todoUpdateRequestDto.getText());
+    }
+
+    private Todo findTodoById(long todoId) {
+        return todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
     }
 }

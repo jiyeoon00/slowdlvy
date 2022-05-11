@@ -29,4 +29,8 @@ public class Todo extends BaseTimeEntity {
     public void changeStatus() {
         this.status = status.toggle();
     }
+
+    public void update(String text) {
+        this.text = text;
+    }
 }

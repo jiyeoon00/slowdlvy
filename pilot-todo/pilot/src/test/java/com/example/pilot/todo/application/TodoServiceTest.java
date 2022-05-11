@@ -2,6 +2,7 @@ package com.example.pilot.todo.application;
 
 import com.example.pilot.TestEntityFactory;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
+import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
@@ -45,6 +46,24 @@ class TodoServiceTest {
         //then
         assertThat(todoCreateResponseDto.getId()).isGreaterThan(0L);
         assertThat(todoCreateResponseDto.getText()).isNotBlank();
+    }
+
+    @Test
+    void Todo_내용_변경_테스트() throws Exception{
+        //given
+        TodoUpdateRequestDto todoUpdateRequestDto = TodoUpdateRequestDto.builder()
+                .todoId(todo.getId())
+                .text("new text")
+                .build();
+        given(todoRepository.findById(todo.getId())).willReturn(Optional.ofNullable(todo));
+        String beforeText = todo.getText();
+
+        //when
+        todoService.update(todoUpdateRequestDto);
+        String afterText = todo.getText();
+
+        //then
+        assertThat(beforeText).isNotEqualTo(afterText);
     }
 
     @Test
