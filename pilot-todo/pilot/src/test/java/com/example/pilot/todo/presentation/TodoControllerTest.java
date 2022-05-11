@@ -22,6 +22,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -57,5 +59,13 @@ class TodoControllerTest {
                         .content(objectMapper.writeValueAsString(todoCreateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(todoCreateResponse)));
+    }
+
+    @Test
+    void 단건_완료_활성화_테스트() throws Exception{
+        mockMvc.perform(patch("/todo/{id}/status", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(todoService).changeStatus(any(Long.class));
     }
 }

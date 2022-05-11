@@ -19,15 +19,14 @@ public class Todo extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
 
-    public Todo(String text) {
-        this.text = text;
-        this.status = TodoStatus.ACTIVE;
-    }
-
     @Builder
     public Todo(Long id, String text) {
         this.id = id;
         this.text = text;
         this.status = TodoStatus.ACTIVE;
+    }
+
+    public void changeStatus() {
+        this.status = status.toggle();
     }
 }

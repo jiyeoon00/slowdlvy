@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoDtoAssembler {
     public static Todo toTodo(TodoCreateRequestDto todoCreateRequestDto) {
-        return new Todo(todoCreateRequestDto.getText());
+        return Todo.builder()
+                .text(todoCreateRequestDto.getText())
+                .build();
     }
 
     public static TodoCreateResponseDto todoCreateResponseDto(Todo todo) {

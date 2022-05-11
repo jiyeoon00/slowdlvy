@@ -5,6 +5,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.repository.TodoRepository;
+import com.example.pilot.todo.exception.TodoNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,10 @@ public class TodoService {
         Todo savedTodo = todoRepository.save(TodoDtoAssembler.toTodo(todoCreateRequestDto));
         return TodoDtoAssembler.todoCreateResponseDto(savedTodo);
     }
+
+    public void changeStatus(long todoId) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
+        todo.changeStatus();
+    }
+
 }

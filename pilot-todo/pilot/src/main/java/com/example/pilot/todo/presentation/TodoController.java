@@ -6,10 +6,7 @@ import com.example.pilot.todo.presentation.dto.TodoAssembler;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,5 +20,10 @@ public class TodoController {
     public TodoCreateResponse todoSave(@RequestBody @Valid TodoCreateRequest todoCreateRequest) {
         TodoCreateRequestDto todoCreateRequestDto = TodoAssembler.todoCreateRequestDto(todoCreateRequest);
         return TodoAssembler.todoCreateResponse(todoService.save(todoCreateRequestDto));
+    }
+
+    @PatchMapping("/{id}/status")
+    public void todoStatusChange(@PathVariable("id") long todoId) {
+        todoService.changeStatus(todoId);
     }
 }
