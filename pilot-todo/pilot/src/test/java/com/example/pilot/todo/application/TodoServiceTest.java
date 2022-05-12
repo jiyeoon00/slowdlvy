@@ -5,7 +5,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
-import com.example.pilot.todo.application.dto.response.TodoResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoInfoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
@@ -124,13 +124,13 @@ class TodoServiceTest {
         given(todoRepository.findById(todo.getId())).willReturn(Optional.ofNullable(todo));
 
         //when
-        TodoResponseDto todoResponseDto = todoService.find(todo.getId());
+        TodoInfoResponseDto todoInfoResponseDto = todoService.find(todo.getId());
 
         //then
-        assertThat(todoResponseDto.getId()).isEqualTo(todo.getId());
-        assertThat(todoResponseDto.getText()).isEqualTo(todo.getText());
-        assertThat(todoResponseDto.getStatus()).isEqualTo(todo.getStatus());
-        assertThat(todoResponseDto.getCreatedDate()).isEqualTo(todo.getCreatedDate());
+        assertThat(todoInfoResponseDto.getId()).isEqualTo(todo.getId());
+        assertThat(todoInfoResponseDto.getText()).isEqualTo(todo.getText());
+        assertThat(todoInfoResponseDto.getStatus()).isEqualTo(todo.getStatus());
+        assertThat(todoInfoResponseDto.getCreatedDate()).isEqualTo(todo.getCreatedDate());
     }
 
     @Test
@@ -145,9 +145,9 @@ class TodoServiceTest {
         given(todoRepository.findAllByStatus(null)).willReturn(todoList);
 
         //when
-        List<TodoResponseDto> todoResponseDtoList = todoService.findTodoList(null);
+        List<TodoInfoResponseDto> todoInfoResponseDtoList = todoService.findTodoList(null);
 
         //then
-        assertThat(todoResponseDtoList.size()).isEqualTo(10);
+        assertThat(todoInfoResponseDtoList.size()).isEqualTo(10);
     }
 }

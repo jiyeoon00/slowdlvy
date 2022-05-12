@@ -3,7 +3,7 @@ package com.example.pilot.todo.presentation;
 import com.example.pilot.todo.application.TodoService;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
-import com.example.pilot.todo.application.dto.response.TodoResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoInfoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
@@ -56,14 +56,14 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public TodoResponse todoFind(@PathVariable("id") long todoId) {
-        TodoResponseDto todoResponseDto = todoService.find(todoId);
-        return TodoAssembler.todoResponse(todoResponseDto);
+    public TodoInfoResponse todoFind(@PathVariable("id") long todoId) {
+        TodoInfoResponseDto todoInfoResponseDto = todoService.find(todoId);
+        return TodoAssembler.todoInfoResponse(todoInfoResponseDto);
     }
 
     @GetMapping
-    public TodoListResponse todoListFind(@RequestParam(value = "status", required = false) String status) {
-        List<TodoResponseDto> todoResponseDtoList = todoService.findTodoList(status);
-        return TodoAssembler.todoListResponse(todoResponseDtoList);
+    public TodoInfoListResponse todoListFind(@RequestParam(value = "status", required = false) String status) {
+        List<TodoInfoResponseDto> todoInfoResponseDtoList = todoService.findTodoList(status);
+        return TodoAssembler.todoListResponse(todoInfoResponseDtoList);
     }
 }

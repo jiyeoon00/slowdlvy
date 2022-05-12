@@ -1,7 +1,7 @@
 package com.example.pilot.todo.domain;
 
 import com.example.pilot.TestEntityFactory;
-import com.example.pilot.todo.exception.InvalidTodoStatusException;
+import com.example.pilot.common.exception.InvalidTodoStatusException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

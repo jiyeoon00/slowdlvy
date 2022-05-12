@@ -1,6 +1,6 @@
 package com.example.pilot.todo.domain;
 
-import com.example.pilot.todo.exception.InvalidTodoStatusException;
+import com.example.pilot.common.exception.InvalidTodoStatusException;
 
 import java.util.Arrays;
 import java.util.Optional;

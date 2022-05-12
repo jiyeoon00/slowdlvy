@@ -5,7 +5,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
-import com.example.pilot.todo.application.dto.response.TodoResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoInfoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
@@ -128,14 +128,14 @@ class TodoControllerTest {
 
     @Test
     void 단건_Todo_조회_테스트() throws Exception{
-        TodoResponseDto todoResponseDto = TodoResponseDto.builder()
+        TodoInfoResponseDto todoInfoResponseDto = TodoInfoResponseDto.builder()
                 .id(1L)
                 .text("find text")
                 .status(TodoStatus.ACTIVE)
                 .createdDate(LocalDateTime.now())
                 .build();
-        TodoResponse response = TodoAssembler.todoResponse(todoResponseDto);
-        given(todoService.find(any(Long.class))).willReturn(todoResponseDto);
+        TodoInfoResponse response = TodoAssembler.todoInfoResponse(todoInfoResponseDto);
+        given(todoService.find(any(Long.class))).willReturn(todoInfoResponseDto);
 
         mockMvc.perform(get("/todo/{id}", 1L)
                         .contentType(APPLICATION_JSON))
@@ -145,18 +145,18 @@ class TodoControllerTest {
 
     @Test
     void 전체_Todo_목록_조회_테스트() throws Exception{
-        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
+        List<TodoInfoResponseDto> todoInfoResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            TodoResponseDto todoResponseDto = TodoResponseDto.builder().id(i)
+            TodoInfoResponseDto todoInfoResponseDto = TodoInfoResponseDto.builder().id(i)
                     .text("text" + i)
                     .createdDate(LocalDateTime.now())
                     .status(i % 2 == 0 ? TodoStatus.ACTIVE : TodoStatus.COMPLETE)
                     .build();
-            todoResponseDtoList.add(todoResponseDto);
+            todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoListResponse response = TodoAssembler.todoListResponse(todoResponseDtoList);
-        given(todoService.findTodoList(null)).willReturn(todoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        given(todoService.findTodoList(null)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo")
                         .contentType(APPLICATION_JSON))
@@ -168,18 +168,18 @@ class TodoControllerTest {
     void 활성화_Todo_목록_조회_테스트() throws Exception{
         String status = "active";
 
-        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
+        List<TodoInfoResponseDto> todoInfoResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TodoResponseDto todoResponseDto = TodoResponseDto.builder().id(i)
+            TodoInfoResponseDto todoInfoResponseDto = TodoInfoResponseDto.builder().id(i)
                     .text("text" + i)
                     .createdDate(LocalDateTime.now())
                     .status(TodoStatus.ACTIVE)
                     .build();
-            todoResponseDtoList.add(todoResponseDto);
+            todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoListResponse response = TodoAssembler.todoListResponse(todoResponseDtoList);
-        given(todoService.findTodoList(status)).willReturn(todoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        given(todoService.findTodoList(status)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo?status=" + status)
                         .contentType(APPLICATION_JSON))
@@ -191,18 +191,18 @@ class TodoControllerTest {
     void 완료_Todo_목록_조회_테스트() throws Exception{
         String status = "complete";
 
-        List<TodoResponseDto> todoResponseDtoList = new ArrayList<>();
+        List<TodoInfoResponseDto> todoInfoResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TodoResponseDto todoResponseDto = TodoResponseDto.builder().id(i)
+            TodoInfoResponseDto todoInfoResponseDto = TodoInfoResponseDto.builder().id(i)
                     .text("text" + i)
                     .createdDate(LocalDateTime.now())
                     .status(TodoStatus.COMPLETE)
                     .build();
-            todoResponseDtoList.add(todoResponseDto);
+            todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoListResponse response = TodoAssembler.todoListResponse(todoResponseDtoList);
-        given(todoService.findTodoList(status)).willReturn(todoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        given(todoService.findTodoList(status)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo?status=" + status)
                         .contentType(APPLICATION_JSON))

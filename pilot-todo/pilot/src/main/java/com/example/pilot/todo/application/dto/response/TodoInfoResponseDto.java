@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class TodoResponseDto {
+public class TodoInfoResponseDto {
     private long id;
     private String text;
     private TodoStatus status;

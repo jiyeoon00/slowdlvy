@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class TodoListResponse {
-    private List<TodoResponse> todoList;
+public class TodoInfoListResponse {
+    private List<TodoInfoResponse> todoList;
     private int count;
 }

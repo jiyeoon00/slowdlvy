@@ -4,7 +4,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
-import com.example.pilot.todo.application.dto.response.TodoResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoInfoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
@@ -43,19 +43,19 @@ public class TodoAssembler {
         return new TodoDeleteResponse(todoDeleteResponseDto.getDeleteCount());
     }
 
-    public static TodoResponse todoResponse(TodoResponseDto todoResponseDto) {
-        return TodoResponse.builder()
-                .id(todoResponseDto.getId())
-                .text(todoResponseDto.getText())
-                .status(todoResponseDto.getStatus())
-                .createdDate(todoResponseDto.getCreatedDate())
+    public static TodoInfoResponse todoInfoResponse(TodoInfoResponseDto todoInfoResponseDto) {
+        return TodoInfoResponse.builder()
+                .id(todoInfoResponseDto.getId())
+                .text(todoInfoResponseDto.getText())
+                .status(todoInfoResponseDto.getStatus())
+                .createdDate(todoInfoResponseDto.getCreatedDate())
                 .build();
     }
 
-    public static TodoListResponse todoListResponse(List<TodoResponseDto> todoResponseDtoList) {
-        List<TodoResponse> todoResponseList = todoResponseDtoList.stream()
-                .map(TodoAssembler::todoResponse)
+    public static TodoInfoListResponse todoListResponse(List<TodoInfoResponseDto> todoInfoResponseDtoList) {
+        List<TodoInfoResponse> todoInfoResponseList = todoInfoResponseDtoList.stream()
+                .map(TodoAssembler::todoInfoResponse)
                 .collect(Collectors.toList());
-        return new TodoListResponse(todoResponseList, todoResponseList.size());
+        return new TodoInfoListResponse(todoInfoResponseList, todoInfoResponseList.size());
     }
 }

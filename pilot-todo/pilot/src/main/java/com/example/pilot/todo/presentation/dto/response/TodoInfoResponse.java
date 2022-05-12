@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TodoResponse {
+public class TodoInfoResponse {
     private long id;
     private String text;
     private TodoStatus status;
