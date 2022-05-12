@@ -5,6 +5,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
@@ -16,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -113,5 +116,38 @@ class TodoServiceTest {
 
         //then
         assertThat(todoDeleteResponseDto.getDeleteCount()).isEqualTo(3);
+    }
+
+    @Test
+    void 단건_Todo_조회_테스트() throws Exception{
+        //given
+        given(todoRepository.findById(todo.getId())).willReturn(Optional.ofNullable(todo));
+
+        //when
+        TodoResponseDto todoResponseDto = todoService.find(todo.getId());
+
+        //then
+        assertThat(todoResponseDto.getId()).isEqualTo(todo.getId());
+        assertThat(todoResponseDto.getText()).isEqualTo(todo.getText());
+        assertThat(todoResponseDto.getStatus()).isEqualTo(todo.getStatus());
+        assertThat(todoResponseDto.getCreatedDate()).isEqualTo(todo.getCreatedDate());
+    }
+
+    @Test
+    void 전체_Todo_목록_조회_테스트() throws Exception{
+        //given
+        List<Todo> todoList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Todo todoInstance = TestEntityFactory.getTodoInstance();
+            if (i % 2 == 0) todoInstance.changeStatus();
+            todoList.add(todoInstance);
+        }
+        given(todoRepository.findAllByStatus(null)).willReturn(todoList);
+
+        //when
+        List<TodoResponseDto> todoResponseDtoList = todoService.findTodoList(null);
+
+        //then
+        assertThat(todoResponseDtoList.size()).isEqualTo(10);
     }
 }

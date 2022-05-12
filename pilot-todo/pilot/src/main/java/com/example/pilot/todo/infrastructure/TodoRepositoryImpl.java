@@ -3,10 +3,12 @@ package com.example.pilot.todo.infrastructure;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.domain.repository.TodoRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.pilot.todo.domain.QTodo.todo;
@@ -44,5 +46,16 @@ public class TodoRepositoryImpl implements TodoRepository {
         return queryFactory.delete(todo)
                 .where(todo.status.eq(TodoStatus.COMPLETE))
                 .execute();
+    }
+
+    @Override
+    public List<Todo> findAllByStatus(TodoStatus status) {
+        return queryFactory.selectFrom(todo)
+                .where(getStatusEq(status))
+                .fetch();
+    }
+
+    private BooleanExpression getStatusEq(TodoStatus status) {
+        return status != null ? todo.status.eq(status) : null;
     }
 }

@@ -2,6 +2,7 @@ package com.example.pilot.todo.application.dto;
 
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,14 @@ public class TodoDtoAssembler {
 
     public static TodoCreateResponseDto todoCreateResponseDto(Todo todo) {
         return new TodoCreateResponseDto(todo.getId(), todo.getText());
+    }
+
+    public static TodoResponseDto todoResponseDto(Todo todo) {
+        return TodoResponseDto.builder()
+                .id(todo.getId())
+                .text(todo.getText())
+                .status(todo.getStatus())
+                .createdDate(todo.getCreatedDate())
+                .build();
     }
 }

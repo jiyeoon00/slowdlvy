@@ -5,6 +5,7 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -45,11 +48,22 @@ public class TodoService {
         todoRepository.delete(todoId);
     }
 
+    public TodoDeleteResponseDto deleteComplete() {
+        return new TodoDeleteResponseDto(todoRepository.deleteAllComplete());
+    }
+
+    public TodoResponseDto find(long todoId) {
+        return TodoDtoAssembler.todoResponseDto(findTodoById(todoId));
+    }
+
     private Todo findTodoById(long todoId) {
         return todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
     }
 
-    public TodoDeleteResponseDto deleteComplete() {
-        return new TodoDeleteResponseDto(todoRepository.deleteAllComplete());
+    public List<TodoResponseDto> findTodoList(String status) {
+        List<Todo> findTodoList = todoRepository.findAllByStatus(TodoStatus.convert(status));
+        return findTodoList.stream()
+                .map(TodoDtoAssembler::todoResponseDto)
+                .collect(Collectors.toList());
     }
 }

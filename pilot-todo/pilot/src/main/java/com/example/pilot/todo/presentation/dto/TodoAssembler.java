@@ -4,14 +4,16 @@ import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
-import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
-import com.example.pilot.todo.presentation.dto.response.TodoDeleteResponse;
-import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
+import com.example.pilot.todo.presentation.dto.response.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoAssembler {
@@ -39,5 +41,21 @@ public class TodoAssembler {
 
     public static TodoDeleteResponse todoDeleteResponse(TodoDeleteResponseDto todoDeleteResponseDto) {
         return new TodoDeleteResponse(todoDeleteResponseDto.getDeleteCount());
+    }
+
+    public static TodoResponse todoResponse(TodoResponseDto todoResponseDto) {
+        return TodoResponse.builder()
+                .id(todoResponseDto.getId())
+                .text(todoResponseDto.getText())
+                .status(todoResponseDto.getStatus())
+                .createdDate(todoResponseDto.getCreatedDate())
+                .build();
+    }
+
+    public static TodoListResponse todoListResponse(List<TodoResponseDto> todoResponseDtoList) {
+        List<TodoResponse> todoResponseList = todoResponseDtoList.stream()
+                .map(TodoAssembler::todoResponse)
+                .collect(Collectors.toList());
+        return new TodoListResponse(todoResponseList, todoResponseList.size());
     }
 }

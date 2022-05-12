@@ -70,4 +70,45 @@ class TodoRepositoryTest {
         //then
         assertThat(deleteCount).isEqualTo(completeTodoCount);
     }
+
+    @Test
+    void 전체_Todo_목록_조회_테스트() throws Exception{
+        //given
+
+        //when
+        List<Todo> todoList = todoRepository.findAllByStatus(null);
+        long activeCount = todoList.stream().filter(todo -> todo.getStatus() == TodoStatus.ACTIVE).count();
+        long completeCount = todoList.size() - activeCount;
+
+        //then
+        assertThat(todoList.size()).isEqualTo(10);
+        assertThat(activeCount).isEqualTo(5);
+        assertThat(completeCount).isEqualTo(5);
+    }
+
+    @Test
+    void 활성화_Todo_목록_조회_테스트() throws Exception{
+        //given
+
+        //when
+        List<Todo> todoList = todoRepository.findAllByStatus(TodoStatus.ACTIVE);
+        long activeCount = todoList.stream().filter(todo -> todo.getStatus() == TodoStatus.ACTIVE).count();
+
+        //then
+        assertThat(todoList.size()).isEqualTo(5);
+        assertThat(activeCount).isEqualTo(5);
+    }
+
+    @Test
+    void 완료_Todo_목록_조회_테스트() throws Exception{
+        //given
+
+        //when
+        List<Todo> todoList = todoRepository.findAllByStatus(TodoStatus.COMPLETE);
+        long completeCount = todoList.stream().filter(todo -> todo.getStatus() == TodoStatus.COMPLETE).count();
+
+        //then
+        assertThat(todoList.size()).isEqualTo(5);
+        assertThat(completeCount).isEqualTo(5);
+    }
 }
