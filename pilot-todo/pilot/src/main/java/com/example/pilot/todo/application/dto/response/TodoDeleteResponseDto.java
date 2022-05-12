@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TodoStatusChangeResponseDto {
-    private long updateCount;
+public class TodoDeleteResponseDto {
+    private long deleteCount;
 }

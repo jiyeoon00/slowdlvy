@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TodoStatusChangeResponse {
-    private int updateCount;
+    private long updateCount;
 }

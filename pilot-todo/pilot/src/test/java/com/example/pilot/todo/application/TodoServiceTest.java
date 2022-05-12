@@ -4,6 +4,7 @@ import com.example.pilot.TestEntityFactory;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.Todo;
 import com.example.pilot.todo.domain.TodoStatus;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class TodoServiceTest {
@@ -81,12 +83,35 @@ class TodoServiceTest {
     @Test
     void 전체_완료_활성화_테스트() throws Exception{
         //given
-        given(todoRepository.updateAllStatus(any(TodoStatus.class))).willReturn(10);
+        given(todoRepository.updateAllStatus(any(TodoStatus.class))).willReturn(10L);
 
         //when
         TodoStatusChangeResponseDto responseDto = todoService.changeAllTodoStatus(TodoStatus.ACTIVE);
 
         //then
         assertThat(responseDto.getUpdateCount()).isEqualTo(10);
+    }
+
+    @Test
+    void 단건_Todo_제거_테스트() throws Exception{
+        //given
+
+        //when
+        todoService.delete(todo.getId());
+
+        //then
+        verify(todoRepository).delete(any(Long.class));
+    }
+
+    @Test
+    void 완료건_제거_테스트() throws Exception{
+        //given
+        given(todoRepository.deleteAllComplete()).willReturn(3L);
+
+        //when
+        TodoDeleteResponseDto todoDeleteResponseDto = todoService.deleteComplete();
+
+        //then
+        assertThat(todoDeleteResponseDto.getDeleteCount()).isEqualTo(3);
     }
 }

@@ -4,6 +4,7 @@ import com.example.pilot.todo.application.TodoService;
 import com.example.pilot.todo.application.dto.request.TodoCreateRequestDto;
 import com.example.pilot.todo.application.dto.request.TodoUpdateRequestDto;
 import com.example.pilot.todo.application.dto.response.TodoCreateResponseDto;
+import com.example.pilot.todo.application.dto.response.TodoDeleteResponseDto;
 import com.example.pilot.todo.application.dto.response.TodoStatusChangeResponseDto;
 import com.example.pilot.todo.domain.TodoStatus;
 import com.example.pilot.todo.presentation.dto.TodoAssembler;
@@ -11,6 +12,7 @@ import com.example.pilot.todo.presentation.dto.request.TodoCreateRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoStatusChangeRequest;
 import com.example.pilot.todo.presentation.dto.request.TodoUpdateRequest;
 import com.example.pilot.todo.presentation.dto.response.TodoCreateResponse;
+import com.example.pilot.todo.presentation.dto.response.TodoDeleteResponse;
 import com.example.pilot.todo.presentation.dto.response.TodoStatusChangeResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -100,5 +101,25 @@ class TodoControllerTest {
                 .andExpect(status().isOk());
 
         verify(todoService).update(any(TodoUpdateRequestDto.class));
+    }
+
+    @Test
+    void 단건_Todo_제거_테스트() throws Exception{
+        mockMvc.perform(delete("/todo/{id}", 1L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(todoService).delete(any(Long.class));
+    }
+
+    @Test
+    void 완료건_제거_테스트() throws Exception{
+        TodoDeleteResponseDto todoDeleteResponseDto = new TodoDeleteResponseDto(3);
+        TodoDeleteResponse response = TodoAssembler.todoDeleteResponse(todoDeleteResponseDto);
+        given(todoService.deleteComplete()).willReturn(todoDeleteResponseDto);
+
+        mockMvc.perform(delete("/todo/complete")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 }

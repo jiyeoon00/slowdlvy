@@ -10,5 +10,9 @@ public interface TodoRepository {
 
     Optional<Todo> findById(long todoId);
 
-    int updateAllStatus(TodoStatus status);
+    long updateAllStatus(TodoStatus status);
+
+    void delete(long todoId);
+
+    long deleteAllComplete();
 }
