@@ -29,7 +29,7 @@
 .idea/**/dbnavigator.xml
 
 # Gradle
-.idea
+../.idea
 .idea/**/gradle.xml
 .idea/**/libraries
 
