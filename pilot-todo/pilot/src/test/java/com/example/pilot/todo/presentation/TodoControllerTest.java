@@ -76,7 +76,7 @@ class TodoControllerTest {
         mockMvc.perform(patch("/todo/{id}/status", 1L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
-        verify(todoService).changeStatus(any(Long.class));
+        verify(todoService).toggleStatus(any(Long.class));
     }
 
     @Test
@@ -89,7 +89,8 @@ class TodoControllerTest {
 
         mockMvc.perform(patch("/todo/status")
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }

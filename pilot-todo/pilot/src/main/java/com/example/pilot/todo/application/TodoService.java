@@ -29,8 +29,8 @@ public class TodoService {
         return TodoDtoAssembler.todoCreateResponseDto(savedTodo);
     }
 
-    public void changeStatus(long todoId) {
-        Todo todo = findTodoById(todoId);
+    public void toggleStatus(long todoId) {
+        Todo todo = findByIdForUpdate(todoId);
         todo.changeStatus();
     }
 
@@ -40,7 +40,7 @@ public class TodoService {
     }
 
     public void update(TodoUpdateRequestDto todoUpdateRequestDto) {
-        Todo todo = findTodoById(todoUpdateRequestDto.getTodoId());
+        Todo todo = findByIdForUpdate(todoUpdateRequestDto.getTodoId());
         todo.update(todoUpdateRequestDto.getText());
     }
 
@@ -67,5 +67,9 @@ public class TodoService {
 
     private Todo findTodoById(long todoId) {
         return todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
+    }
+
+    private Todo findByIdForUpdate(long todoId) {
+        return todoRepository.findByIdForUpdate(todoId).orElseThrow(TodoNotFoundException::new);
     }
 }

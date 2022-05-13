@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,14 @@ public class TodoRepositoryImpl implements TodoRepository {
         return queryFactory.selectFrom(todo)
                 .where(getStatusEq(status))
                 .fetch();
+    }
+
+    @Override
+    public Optional<Todo> findByIdForUpdate(long todoId) {
+        return Optional.ofNullable(queryFactory.selectFrom(todo)
+                .where(todo.id.eq(todoId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .fetchOne());
     }
 
     private BooleanExpression getStatusEq(TodoStatus status) {

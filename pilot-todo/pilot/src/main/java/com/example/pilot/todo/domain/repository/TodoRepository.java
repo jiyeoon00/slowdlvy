@@ -18,4 +18,7 @@ public interface TodoRepository {
     long deleteAllComplete();
 
     List<Todo> findAllByStatus(TodoStatus status);
+
+    Optional<Todo> findByIdForUpdate(long todoId);
+
 }

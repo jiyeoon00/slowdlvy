@@ -60,7 +60,7 @@ class TodoServiceTest {
                 .todoId(todo.getId())
                 .text("new text")
                 .build();
-        given(todoRepository.findById(todo.getId())).willReturn(Optional.ofNullable(todo));
+        given(todoRepository.findByIdForUpdate(todo.getId())).willReturn(Optional.ofNullable(todo));
         String beforeText = todo.getText();
 
         //when
@@ -74,10 +74,10 @@ class TodoServiceTest {
     @Test
     void 단건_완료_활성화_테스트() throws Exception{
         //given
-        given(todoRepository.findById(any(Long.class))).willReturn(Optional.ofNullable(todo));
+        given(todoRepository.findByIdForUpdate(any(Long.class))).willReturn(Optional.ofNullable(todo));
 
         //when
-        todoService.changeStatus(todo.getId());
+        todoService.toggleStatus(todo.getId());
 
         //then
         assertThat(todo.getStatus()).isEqualTo(TodoStatus.COMPLETE);

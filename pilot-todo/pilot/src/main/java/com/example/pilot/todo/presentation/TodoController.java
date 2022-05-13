@@ -34,8 +34,8 @@ public class TodoController {
     }
 
     @PatchMapping("/{id}/status")
-    public void todoStatusChange(@PathVariable("id") long todoId) {
-        todoService.changeStatus(todoId);
+    public void todoStatusToggle(@PathVariable("id") long todoId) {
+        todoService.toggleStatus(todoId);
     }
 
     @PatchMapping("/status")
