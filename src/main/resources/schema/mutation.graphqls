@@ -1,13 +1,33 @@
 type Mutation {
-    createTodo( createTodoRequest : CreateTodoRequest ) : CreateTodoResponse
+    createTodo( createTodoRequest : CreateTodoRequest ) : TodoResponse
+    updateTodoState( updateTodoStateRequest : UpdateTodoStateRequest ) : TodoResponse
+    updateTodoTitle( updateTodoTitleRequest : UpdateTodoTitleRequest ) : TodoResponse
+    updateAllTodoState( updateAllTodoStateRequest : UpdateAllTodoStateRequest ) : [TodoResponse]
 }
 
 input CreateTodoRequest {
     title : String
 }
 
-type CreateTodoResponse {
+
+input UpdateTodoStateRequest {
+    id : Long
+    state : String
+}
+
+input UpdateTodoTitleRequest {
+    id : Long
+    title : String
+}
+
+input UpdateAllTodoStateRequest {
+    state : String
+}
+
+type TodoResponse {
     id : Long
     title : String
     state : String
 }
+
+

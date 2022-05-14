@@ -1,3 +1,8 @@
 type Query {
+    getTodo( getTodoRequest : GetTodoRequest ) : TodoResponse
+    getAllTodo : [TodoResponse]
+}
 
+input GetTodoRequest {
+    id : Long
 }

@@ -2,9 +2,11 @@ package com.hanium.pilot.domain.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Setter
 @Getter
 @Entity
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class Todo extends Base{
 
     @Enumerated(EnumType.STRING)
     private State state;
+
 
     public static Todo createTodo(String title){
         Todo todo = new Todo();
