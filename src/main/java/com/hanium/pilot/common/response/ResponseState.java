@@ -1,11 +1,11 @@
-package com.hanium.pilot.response;
+package com.hanium.pilot.common.response;
 
 import lombok.Getter;
 
 @Getter
 public enum ResponseState {
 
-    OK(true,200,"요청성공");
+    SUCCESS(true,200,"요청성공");
 
     private final boolean success;
     private final int code;

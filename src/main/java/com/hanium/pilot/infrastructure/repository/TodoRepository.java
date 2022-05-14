@@ -1,6 +1,6 @@
-package com.hanium.pilot.repository;
+package com.hanium.pilot.infrastructure.repository;
 
-import com.hanium.pilot.model.Todo;
+import com.hanium.pilot.domain.model.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

@@ -1,0 +1,13 @@
+type Mutation {
+    createTodo( createTodoRequest : CreateTodoRequest ) : CreateTodoResponse
+}
+
+input CreateTodoRequest {
+    title : String
+}
+
+type CreateTodoResponse {
+    id : Long
+    title : String
+    state : String
+}

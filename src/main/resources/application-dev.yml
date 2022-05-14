@@ -12,3 +12,8 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
+graphiql:
+  mapping: /ui
+graphql :
+  servlet:
+    mapping: /api-service
