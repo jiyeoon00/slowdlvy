@@ -6,12 +6,15 @@ import com.hanium.pilot.application.service.TodoService;
 import com.hanium.pilot.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
 @Component
 @RequiredArgsConstructor
+@Validated
 public class TodoMutation implements GraphQLMutationResolver {
 
     private final TodoService todoService;
@@ -20,7 +23,7 @@ public class TodoMutation implements GraphQLMutationResolver {
         return todoService.createTodo(request);
     }
 
-    public TodoResponse updateTodoState(UpdateTodoStateRequest request){
+    public TodoResponse updateTodoState(@Valid UpdateTodoStateRequest request){
         return todoService.updateTodoState(request);
     }
 

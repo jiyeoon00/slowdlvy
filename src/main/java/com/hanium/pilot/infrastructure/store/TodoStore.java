@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hanium.pilot.common.response.ResponseState.NOT_EXIST_STATE;
 import static com.hanium.pilot.common.response.ResponseState.NOT_EXIST_TODO;
 
 @Component
@@ -28,9 +27,6 @@ public class TodoStore {
     }
 
     public Todo updateTodoState(Todo todo, String state) {
-        if(!State.contains(state)){
-            throw new RuntimeException(NOT_EXIST_STATE);
-        }
         todo.setState(State.valueOf(state));
         return todo;
     }

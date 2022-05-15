@@ -1,0 +1,23 @@
+# state 변경 (완료,삭제)
+mutation {
+    updateTodoState(updateTodoStateRequest:{
+        id : 1
+        state : "ACTIVE"
+    }) {
+        id
+        title
+        state
+    }
+}
+
+# title 변경
+mutation {
+    updateTodoTitle(updateTodoTitleRequest:{
+        id : 1
+        title : "test"
+    }) {
+        id
+        title
+        state
+    }
+}

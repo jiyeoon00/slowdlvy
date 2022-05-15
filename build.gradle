@@ -32,6 +32,7 @@ dependencies {
 
     implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:6.0.1'
     runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:6.0.1'
+    implementation 'org.hibernate.validator:hibernate-validator'
 }
 
 tasks.named('test') {

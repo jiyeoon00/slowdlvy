@@ -1,0 +1,19 @@
+# 모두 조회
+query {
+    getAllTodo{
+        id
+        title
+        state
+    }
+}
+
+# 단일 조회
+query {
+    getTodo(getTodoRequest:{
+        id : 1
+    }) {
+        id
+        title
+        state
+    }
+}

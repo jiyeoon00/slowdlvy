@@ -1,0 +1,11 @@
+# 생성
+mutation {
+    createTodo(createTodoRequest:{
+        title : "test"
+    }) {
+        id
+        title
+        state
+    }
+}
+
