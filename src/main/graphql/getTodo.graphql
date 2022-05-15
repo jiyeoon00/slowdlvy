@@ -17,3 +17,14 @@ query {
         state
     }
 }
+
+# 조회실패
+query {
+    getTodo(getTodoRequest:{
+        id : 100
+    }) {
+        id
+        title
+        state
+    }
+}

@@ -21,3 +21,15 @@ mutation {
         state
     }
 }
+
+# state 변경 실패
+mutation {
+    updateTodoState(updateTodoStateRequest:{
+        id : 1
+        state : "A"
+    }) {
+        id
+        title
+        state
+    }
+}

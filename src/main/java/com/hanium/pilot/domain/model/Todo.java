@@ -21,6 +21,9 @@ public class Todo extends Base{
     @Enumerated(EnumType.STRING)
     private State state;
 
+    @Version
+    private Integer version;
+
 
     public static Todo createTodo(String title){
         Todo todo = new Todo();
