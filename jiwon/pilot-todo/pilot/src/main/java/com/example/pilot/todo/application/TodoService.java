@@ -29,6 +29,7 @@ public class TodoService {
         return TodoDtoAssembler.todoCreateResponseDto(savedTodo);
     }
 
+    // ACTIVE <-> COMPLETE
     public void toggleStatus(long todoId) {
         Todo todo = findByIdForUpdate(todoId);
         todo.changeStatus();
@@ -48,7 +49,7 @@ public class TodoService {
         todoRepository.delete(todoId);
     }
 
-    public TodoDeleteResponseDto deleteComplete() {
+    public TodoDeleteResponseDto deleteAllCompleteTodo() {
         return new TodoDeleteResponseDto(todoRepository.deleteAllComplete());
     }
 
@@ -59,8 +60,8 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<TodoInfoResponseDto> findTodoList(String status) {
-        List<Todo> findTodoList = todoRepository.findAllByStatus(TodoStatus.convert(status));
-        return findTodoList.stream()
+        List<Todo> foundTodoList = todoRepository.findAllByStatus(TodoStatus.convert(status));
+        return foundTodoList.stream()
                 .map(TodoDtoAssembler::todoInfoResponseDto)
                 .collect(Collectors.toList());
     }

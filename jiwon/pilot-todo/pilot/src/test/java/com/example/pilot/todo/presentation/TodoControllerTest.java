@@ -119,7 +119,7 @@ class TodoControllerTest {
     void 완료건_제거_테스트() throws Exception{
         TodoDeleteResponseDto todoDeleteResponseDto = new TodoDeleteResponseDto(3);
         TodoDeleteResponse response = TodoAssembler.todoDeleteResponse(todoDeleteResponseDto);
-        given(todoService.deleteComplete()).willReturn(todoDeleteResponseDto);
+        given(todoService.deleteAllCompleteTodo()).willReturn(todoDeleteResponseDto);
 
         mockMvc.perform(delete("/todo/complete")
                         .contentType(APPLICATION_JSON))

@@ -112,7 +112,7 @@ class TodoServiceTest {
         given(todoRepository.deleteAllComplete()).willReturn(3L);
 
         //when
-        TodoDeleteResponseDto todoDeleteResponseDto = todoService.deleteComplete();
+        TodoDeleteResponseDto todoDeleteResponseDto = todoService.deleteAllCompleteTodo();
 
         //then
         assertThat(todoDeleteResponseDto.getDeleteCount()).isEqualTo(3);
