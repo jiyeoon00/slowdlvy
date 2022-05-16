@@ -7,8 +7,10 @@ import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.WorkStates;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +21,7 @@ public class TodoApiController {
 
     //할 일 추가
     @PostMapping("/todo")
-    public CreateTodoResponse CreateTodo(@RequestBody TodoRequest request){
+    public CreateTodoResponse CreateTodo(@RequestBody @Valid TodoRequest request){
         Todo todo = new Todo(request.getWorkTitle(), WorkStates.ACTIVE);
         Long id = todoService.add(todo);
         return new CreateTodoResponse(id);
@@ -57,7 +59,7 @@ public class TodoApiController {
 
     //수정
     @PutMapping("/todo/{id}")
-    public void Update(@PathVariable("id") Long id, @RequestBody TodoRequest request){
+    public void Update(@PathVariable("id") Long id, @RequestBody @Valid TodoRequest request){
         todoService.Update(id, request.getWorkTitle());
     }
 
@@ -66,7 +68,6 @@ public class TodoApiController {
     public void ChangeState(@PathVariable("id") Long id){
         todoService.changeState(id);
     }
-
 
     //전체 활성화
     @PutMapping("/todo/active")
