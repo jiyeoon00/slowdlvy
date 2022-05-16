@@ -82,18 +82,14 @@ public class TodoService {
      * 전체 활성화
      */
     public void ActiveAllState(){
-        List<Todo> completed = todoRepository.findByStates(WorkStates.COMPLETED);
-        completed.stream()
-                .forEach(t -> t.setStates(WorkStates.ACTIVE));
+        todoRepository.changeAllState(WorkStates.ACTIVE, WorkStates.COMPLETED);
     }
 
     /**
      * 전체 완료
      */
     public void CompletedAllState(){
-        List<Todo> completed = todoRepository.findByStates(WorkStates.ACTIVE);
-        completed.stream()
-                .forEach(t -> t.setStates(WorkStates.COMPLETED));
+        todoRepository.changeAllState(WorkStates.COMPLETED, WorkStates.ACTIVE);
     }
 
 }
