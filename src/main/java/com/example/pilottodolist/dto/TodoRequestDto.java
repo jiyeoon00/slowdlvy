@@ -10,8 +10,8 @@ public class TodoRequestDto {
 
     @Data
     public static class CREATED {
-        @NotBlank(message = "할 일은 최소 1글자, 최대 30자 이내로 입력해주세요")
-        @Size(min = 1, max = 30, message = "할 일은 최소 1글자, 최대 30자 이내로 입력해주세요")
+        @NotBlank(message = "{dto.todo.NotBlank}")
+        @Size(min = 1, max = 30, message = "{dto.todo.content.LimitSize}")
         private String content;
     }
 
