@@ -4,52 +4,63 @@ import com.example.pilottodolist.domain.Progress;
 import com.example.pilottodolist.domain.Todo;
 import com.example.pilottodolist.repository.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @Slf4j
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class TodoServiceTest {
 
-    @Autowired
-    TodoService todoService;
-    @Autowired
+    @Mock
     TodoRepository todoRepository;
+    @InjectMocks
+    TodoService todoService;
+
+    private void sleep(int mills) {
+        try {
+            Thread.sleep(mills);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateWithSleep(Long id) {
+        todoService.changeProgress(id);
+        sleep(1000);
+    }
 
     @Test
     @DisplayName(value = "동시에 progress 상태 변경 테스트")
     void concurrentChangeProgressTest() throws InterruptedException {
         //given
-        Todo todo = todoRepository.save(new Todo("Hello World", Progress.ACTIVE));
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        CountDownLatch latch = new CountDownLatch(2);
+        Todo todo = todoRepository.save(new Todo("Hello World"));
+        Runnable userA = () -> {
+            updateWithSleep(todo.getId());
+        };
+
+        Runnable userB = () -> {
+            updateWithSleep(todo.getId());
+        };
+
+        Thread threadA = new Thread(userA);
+        threadA.setName("***********Thread A************");
+        Thread threadB = new Thread(userB);
+        threadB.setName("***********Thread B************");
 
         //when
-        for(int i=0; i<2; i++) {
-            executorService.execute(() -> {
-                log.info("===============start===============");
-                log.info("==============={}===============", todo.getVersion());
-                todoService.changeProgress(todo.getId());
-                latch.countDown();
-                log.info("==============={}===============", todo.getVersion());
-                log.info("===============end===============");
-            });
-        }
+        threadA.start();
+        threadB.start();
 
-        latch.await();
-        Thread.sleep(500);
-
-        Todo result = todoRepository.findById(todo.getId()).orElseThrow();
-        Assertions.assertThat(2).isEqualTo(result.getVersion());
     }
 
     @Test

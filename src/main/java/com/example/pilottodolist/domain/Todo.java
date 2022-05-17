@@ -20,9 +20,9 @@ public class Todo {
     private Integer version;
 
     @Builder
-    public Todo(String content, Progress progress) {
+    public Todo(String content) {
         this.content = content;
-        this.progress = progress;
+        this.progress = Progress.ACTIVE;
     }
 
     public void changeProgress() {

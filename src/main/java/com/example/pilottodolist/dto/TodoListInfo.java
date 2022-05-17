@@ -1,7 +1,6 @@
 package com.example.pilottodolist.dto;
 
 import lombok.Data;
-
 import java.util.List;
 
 @Data

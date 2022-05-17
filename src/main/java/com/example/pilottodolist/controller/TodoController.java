@@ -16,27 +16,42 @@ public class TodoController {
 
     private final TodoService todoService;
 
+    /**
+     * 할일 추가
+     */
     @PostMapping("/todo")
     public TodoResponseDto.CREATED createTodo(@RequestBody TodoRequestDto.CREATED created) {
         return todoService.create(created);
     }
 
+    /**
+     * 상태 수정
+     */
     @PostMapping("/{todoId}/progress")
     public void changeProgress(@PathVariable("todoId") Long id) {
         todoService.changeProgress(id);
     }
 
+    /**
+     * 체크(COMPLETED)한 할일 삭제
+     */
     @PostMapping(value = "/delete-todos")
     public void deleteTodoList(@RequestBody TodoRequestDto.DELETED deleted) {
         todoService.deleteTodoList(deleted);
     }
 
+    /**
+     * 전체 조회
+     */
     @GetMapping("/todoList")
     public TodoListInfo<TodoResponseDto.GET> getTodoList(@RequestParam(value = "progress", required = false) Progress progress) {
         List<TodoResponseDto.GET> todoList = todoService.getTodoList(progress);
         return new TodoListInfo<>(todoList.size(), todoList);
     }
 
+    /**
+     * 전체상태 수정
+     */
     @PostMapping("/all-progress")
     public TodoResponseDto.UPDATE updateAllProgress(@RequestBody TodoRequestDto.UPDATE isAllCheck) {
         return todoService.updateAllProgress(isAllCheck.getIsAllCheck());

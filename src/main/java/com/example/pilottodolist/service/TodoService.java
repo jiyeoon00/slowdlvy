@@ -2,9 +2,11 @@ package com.example.pilottodolist.service;
 
 import com.example.pilottodolist.domain.Progress;
 import com.example.pilottodolist.domain.Todo;
+import com.example.pilottodolist.dto.DtoFormatter;
 import com.example.pilottodolist.dto.TodoListInfo;
 import com.example.pilottodolist.dto.TodoRequestDto;
 import com.example.pilottodolist.dto.TodoResponseDto;
+import com.example.pilottodolist.exception.NotFoundException;
 import com.example.pilottodolist.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,40 +31,25 @@ public class TodoService {
      */
     @Transactional
     public TodoResponseDto.CREATED create(TodoRequestDto.CREATED created) {
-
-        Todo todo = repository.save(Todo.builder()
-                                        .content(created.getContent())
-                                        .progress(Progress.ACTIVE)
-                                        .build());
-
+        Todo todo = repository.save(DtoFormatter.CreateRequestToTodo(created));
         return new TodoResponseDto.CREATED(todo);
     }
 
     /**
+     *  Concurrent
      *  Active <-> Completed 상태 변화
      */
     @Transactional
     public void changeProgress(Long id) {
-
-        /**
-         * 동시성 고려
-         * 수정 중 누가 지울수도 있고, 수정할 수도 있음
-         */
-        repository.findById(id)
-                .orElseThrow(() -> new OptimisticLockingFailureException("동시 접근 중 입니다.")).changeProgress();
+        repository.findById(id).orElseThrow(NotFoundException::new).changeProgress();
     }
 
     /**
+     * Concurrent
      * 체크한 Todo에 한해 삭제한다.
      */
     @Transactional
     public Long deleteTodoList(TodoRequestDto.DELETED deleted) {
-
-        /**
-         * 동시성 고려
-         * 삭제 중 누가 수정 할 수 있고, 상태를 바꿀 수도 있다.
-         * 클릭 (find) 할 때 부터 락을 걸어야 할 것 같다.
-         */
         return repository.deleteTodoListWithInQuery(deleted.getIds());
     }
 
@@ -77,19 +64,15 @@ public class TodoService {
     }
 
     /**
+     * Concurrent
      * 전체 TodoList의 상태 ACTIVE <-> COMPLETED 변경
      */
     @Transactional
     public TodoResponseDto.UPDATE updateAllProgress(Boolean isAllCheck) {
 
-        /**
-         * 동시성 검사 필요
-         */
-
-        if(isAllCheck) repository.bulkAllProgressToActive(Progress.ACTIVE);
-        else repository.bulkAllProgressToCompleted(Progress.COMPLETED);
+        if(isAllCheck) repository.bulkAllProgress(Progress.ACTIVE);
+        else repository.bulkAllProgress(Progress.COMPLETED);
 
         return new TodoResponseDto.UPDATE(!isAllCheck);
     }
-
 }

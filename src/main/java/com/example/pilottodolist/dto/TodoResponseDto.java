@@ -20,10 +20,12 @@ public class TodoResponseDto {
 
     @Data
     public static class GET {
+        private Long id;
         private String content;
         private Progress progress;
 
         public GET(Todo todo) {
+            this.id = todo.getId();
             this.content = todo.getContent();
             this.progress = todo.getProgress();
         }

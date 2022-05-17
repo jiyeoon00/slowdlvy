@@ -4,6 +4,7 @@ import com.example.pilottodolist.domain.Progress;
 import com.example.pilottodolist.domain.Todo;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import static com.example.pilottodolist.domain.QTodo.todo;
