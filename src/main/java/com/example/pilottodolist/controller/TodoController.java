@@ -8,6 +8,7 @@ import com.example.pilottodolist.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class TodoController {
      * 할일 추가
      */
     @PostMapping("/todo")
-    public TodoResponseDto.CREATED createTodo(@RequestBody TodoRequestDto.CREATED created) {
+    public TodoResponseDto.CREATED createTodo(@RequestBody @Valid TodoRequestDto.CREATED created) {
         return todoService.create(created);
     }
 
