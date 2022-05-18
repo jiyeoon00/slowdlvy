@@ -1,0 +1,17 @@
+schema {
+ query: Query
+}
+
+type Query{
+ findTodoById(id: Int!): Todo,
+}
+
+type Todo{
+ id: Int!,
+ text: String!,
+ status: TodoStatus!
+}
+
+enum TodoStatus {
+ ACTIVE, COMPLETE
+}
