@@ -37,7 +37,7 @@ public class TodoController {
      * 체크(COMPLETED)한 할일 삭제
      */
     @PostMapping(value = "/delete-todos")
-    public void deleteTodoList(@RequestBody TodoRequestDto.DELETED deleted) {
+    public void deleteTodoList(@RequestBody @Valid TodoRequestDto.DELETED deleted) {
         todoService.deleteTodoList(deleted);
     }
 
@@ -45,8 +45,8 @@ public class TodoController {
      * 전체 조회
      */
     @GetMapping("/todoList")
-    public TodoListInfo<TodoResponseDto.GET> getTodoList(@RequestParam(value = "progress", required = false) Progress progress) {
-        List<TodoResponseDto.GET> todoList = todoService.getTodoList(progress);
+    public TodoListInfo<TodoResponseDto.GET> getTodoList(@Valid TodoRequestDto.GET request) {
+        List<TodoResponseDto.GET> todoList = todoService.getTodoList(Progress.of(request.getProgress()));
         return new TodoListInfo<>(todoList.size(), todoList);
     }
 

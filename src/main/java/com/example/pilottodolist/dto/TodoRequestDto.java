@@ -3,6 +3,7 @@ package com.example.pilottodolist.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -17,7 +18,15 @@ public class TodoRequestDto {
     }
 
     @Data
+    public static class GET {
+        @Pattern(regexp = "ACTIVE|COMPLETED", message = "{dto.progress.ActiveOrCompleted}")
+        private String progress;
+    }
+
+    @Data
     public static class DELETED {
+
+        @NotNull(message = "{dto.pk.NotNull}")
         private List<Long> ids;
     }
 

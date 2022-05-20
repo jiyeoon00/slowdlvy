@@ -1,13 +1,11 @@
 package com.example.pilottodolist.exception.advice;
 
-import com.example.pilottodolist.exception.BaseException;
 import com.example.pilottodolist.exception.NotFoundException;
 import com.example.pilottodolist.exception.dto.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,7 +18,7 @@ public class TodoControllerAdvice {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public ErrorResponse TodoHandlerExceptionHandler(NotFoundException e) {
+    public ErrorResponse TodoNotFoundExceptionHandler(NotFoundException e) {
 
         log.error("TodoHandlerExceptionHandler : {} / {}",
                 e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMsg());
@@ -34,9 +32,9 @@ public class TodoControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
-    public ErrorResponse ValidationExceptionHandler(MethodArgumentNotValidException e) {
+    public ErrorResponse BindExceptionHandler(BindException e) {
 
-        log.error("ValidationExceptionHandler : {} / {} ", e.getTarget(), e.getFieldError().getDefaultMessage());
+        log.error("BindExceptionHandler : {} / {} ", e.getTarget() , e.getFieldError().getDefaultMessage());
 
         return ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value())

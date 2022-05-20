@@ -73,7 +73,7 @@ public class TodoService {
     @Transactional
     public TodoResponseDto.ALLUPDATE updateAllProgress(String currentState) {
 
-        repository.bulkAllProgress(Progress.valueOf(currentState));
+        repository.bulkAllProgress(Progress.of(currentState));
         return new TodoResponseDto.ALLUPDATE(currentState);
     }
 }
