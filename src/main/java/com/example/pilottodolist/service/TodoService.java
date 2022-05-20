@@ -31,6 +31,7 @@ public class TodoService {
      */
     @Transactional
     public TodoResponseDto.CREATED create(TodoRequestDto.CREATED created) {
+
         Todo todo = repository.save(DtoFormatter.CreateRequestToTodo(created));
         return new TodoResponseDto.CREATED(todo);
     }
@@ -41,6 +42,7 @@ public class TodoService {
      */
     @Transactional
     public void changeProgress(Long id) {
+
         repository.findById(id).orElseThrow(NotFoundException::new).changeProgress();
     }
 
@@ -50,6 +52,7 @@ public class TodoService {
      */
     @Transactional
     public Long deleteTodoList(TodoRequestDto.DELETED deleted) {
+
         return repository.deleteTodoListWithInQuery(deleted.getIds());
     }
 
@@ -68,11 +71,9 @@ public class TodoService {
      * 전체 TodoList의 상태 ACTIVE <-> COMPLETED 변경
      */
     @Transactional
-    public TodoResponseDto.UPDATE updateAllProgress(Boolean isAllCheck) {
+    public TodoResponseDto.ALLUPDATE updateAllProgress(String currentState) {
 
-        if(isAllCheck) repository.bulkAllProgress(Progress.ACTIVE);
-        else repository.bulkAllProgress(Progress.COMPLETED);
-
-        return new TodoResponseDto.UPDATE(!isAllCheck);
+        repository.bulkAllProgress(Progress.valueOf(currentState));
+        return new TodoResponseDto.ALLUPDATE(currentState);
     }
 }

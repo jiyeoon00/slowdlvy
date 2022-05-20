@@ -15,6 +15,6 @@ import java.util.Optional;
 public interface TodoRepository extends JpaRepository<Todo, Long>, TodoRepositoryCustom {
 
     @Modifying(clearAutomatically = true)
-    @Query("update Todo t set t.progress = :progress, t.version = t.version + 1 where t.progress <> :progress")
+    @Query("update Todo t set t.progress = :progress, t.version = t.version + 1")
     void bulkAllProgress(Progress progress);
 }

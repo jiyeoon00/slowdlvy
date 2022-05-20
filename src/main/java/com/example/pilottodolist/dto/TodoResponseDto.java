@@ -32,11 +32,11 @@ public class TodoResponseDto {
     }
 
     @Data
-    public static class UPDATE {
-        private Boolean isAllCheck;
+    public static class ALLUPDATE {
+        private String currentAllState;
 
-        public UPDATE(Boolean isAllCheck) {
-            this.isAllCheck = isAllCheck;
+        public ALLUPDATE(String currentAllState) {
+            this.currentAllState = (currentAllState.equals("ACTIVE")) ? "COMPLETED" : "ACTIE";
         }
     }
 }

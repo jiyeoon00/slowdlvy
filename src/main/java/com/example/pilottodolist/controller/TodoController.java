@@ -54,7 +54,7 @@ public class TodoController {
      * 전체상태 수정
      */
     @PostMapping("/all-progress")
-    public TodoResponseDto.UPDATE updateAllProgress(@RequestBody TodoRequestDto.UPDATE isAllCheck) {
-        return todoService.updateAllProgress(isAllCheck.getIsAllCheck());
+    public TodoResponseDto.ALLUPDATE updateAllProgress(@RequestBody @Valid TodoRequestDto.ALLUPDATE updateDto) {
+        return todoService.updateAllProgress(updateDto.getCurrentState());
     }
 }

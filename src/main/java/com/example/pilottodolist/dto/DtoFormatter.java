@@ -1,5 +1,6 @@
 package com.example.pilottodolist.dto;
 
+import com.example.pilottodolist.domain.Progress;
 import com.example.pilottodolist.domain.Todo;
 
 public class DtoFormatter {
