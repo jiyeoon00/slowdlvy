@@ -22,12 +22,13 @@ public class TodoControllerAdvice {
     @ExceptionHandler
     public ErrorResponse TodoHandlerExceptionHandler(NotFoundException e) {
 
-        log.error("TodoHandlerExceptionHandler : {} / {}", e.getCode().value(), e.getCode().getReasonPhrase());
+        log.error("TodoHandlerExceptionHandler : {} / {}",
+                e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMsg());
 
         return ErrorResponse.builder()
-                .code(e.getCode().value())
-                .status(e.getCode().getReasonPhrase())
-                .msg(e.getMsg())
+                .code(e.getErrorCode().getHttpStatus().value())
+                .status(e.getErrorCode().getHttpStatus().getReasonPhrase())
+                .msg(e.getErrorCode().getMsg())
                 .build();
     }
 
