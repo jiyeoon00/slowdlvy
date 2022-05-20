@@ -75,8 +75,8 @@ public class TodoController {
        그 외 status : InvalidTodoStatusException 발생
      */
     @GetMapping
-    public TodoInfoListResponse todoListFind(@RequestParam(value = "status", required = false) String status) {
+    public TodoInfoListResponse todoListFind(@RequestParam(value = "status", required = false) String status)  {
         List<TodoInfoResponseDto> todoInfoResponseDtoList = todoService.findTodoList(status);
-        return TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        return TodoAssembler.todoInfoListResponse(todoInfoResponseDtoList);
     }
 }

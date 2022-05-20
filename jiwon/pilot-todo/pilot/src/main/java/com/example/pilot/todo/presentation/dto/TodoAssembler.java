@@ -52,7 +52,7 @@ public class TodoAssembler {
                 .build();
     }
 
-    public static TodoInfoListResponse todoListResponse(List<TodoInfoResponseDto> todoInfoResponseDtoList) {
+    public static TodoInfoListResponse todoInfoListResponse(List<TodoInfoResponseDto> todoInfoResponseDtoList) {
         List<TodoInfoResponse> todoInfoResponseList = todoInfoResponseDtoList.stream()
                 .map(TodoAssembler::todoInfoResponse)
                 .collect(Collectors.toList());

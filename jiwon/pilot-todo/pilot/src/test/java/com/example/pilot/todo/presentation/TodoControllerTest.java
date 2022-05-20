@@ -156,7 +156,7 @@ class TodoControllerTest {
             todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoInfoListResponse(todoInfoResponseDtoList);
         given(todoService.findTodoList(null)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo")
@@ -179,7 +179,7 @@ class TodoControllerTest {
             todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoInfoListResponse(todoInfoResponseDtoList);
         given(todoService.findTodoList(status)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo?status=" + status)
@@ -202,7 +202,7 @@ class TodoControllerTest {
             todoInfoResponseDtoList.add(todoInfoResponseDto);
         }
 
-        TodoInfoListResponse response = TodoAssembler.todoListResponse(todoInfoResponseDtoList);
+        TodoInfoListResponse response = TodoAssembler.todoInfoListResponse(todoInfoResponseDtoList);
         given(todoService.findTodoList(status)).willReturn(todoInfoResponseDtoList);
 
         mockMvc.perform(get("/todo?status=" + status)
