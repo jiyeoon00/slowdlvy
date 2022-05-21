@@ -1,0 +1,20 @@
+{{>layout/header}}
+
+<h1>할 일 등록</h1>
+<div class="col-md-12">
+    <div class="col-md-4">
+        <from>
+            <div class="form-group">
+                <label for="title">할 일</label>
+                <input type="text" class="form-control" id="title" placeholder="할 일 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="content">상세 할 일</label>
+                <textarea class="form-control" id="content" placeholder="상세 정보 입력하세요"></textarea>
+            </div>
+        </from>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+        <button type="button" class="btn btn-primary" id="btn-save">등록</button>
+    </div>
+</div>
+{{>layout/footer}}
