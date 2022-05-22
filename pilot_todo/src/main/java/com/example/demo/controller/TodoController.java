@@ -16,7 +16,7 @@ public class TodoController {
     /**
      * JPA ver.
      */
-    
+
     @GetMapping("/todo")
     public BaseResponse<List<TodoVO>> getTodoRes(){
         try{
