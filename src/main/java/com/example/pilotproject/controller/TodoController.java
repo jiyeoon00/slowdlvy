@@ -25,12 +25,12 @@ public class TodoController {
     // 등록
     @PostMapping("")
     public ResponseEntity register(@RequestBody CreateDto createDto){
-        todoService.register(createDto);
+        Todo todo = todoService.register(createDto);
 
         return new ResponseEntity(ResponseDto.builder()
                 .statusCode(200)
                 .responseMessage("등록 성공")
-                .data(createDto)
+                .data(todo)
                 .build(), HttpStatus.OK);
     }
 
@@ -49,12 +49,12 @@ public class TodoController {
 
     // 상태에 따른 목록 조회
     @GetMapping(value = "/state")
-    public ResponseEntity getActiveList(@RequestParam Boolean isComplete){
-        List list = todoService.searchListByState(isComplete);
+    public ResponseEntity getActiveList(@RequestParam String state){
+        List list = todoService.searchListByState(state);
 
         return new ResponseEntity(ResponseDto.builder()
                 .statusCode(200)
-                .responseMessage("상태(=" + isComplete +") 목록 조회")
+                .responseMessage("상태(=" + state +") 목록 조회")
                 .data(list)
                 .build(), HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class TodoController {
     // 내용 수정
     @PatchMapping("/{id}/content")
     public ResponseEntity updateContent(@PathVariable Long id, @RequestBody UpdateDto updateDto){
-        Optional<Todo> todo = todoService.updateContent(id, updateDto.getContent());
+        Optional<Todo> todo = todoService.updateContent(id, updateDto);
 
         return new ResponseEntity(ResponseDto.builder()
                 .statusCode(200)
