@@ -7,6 +7,7 @@ import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.WorkStates;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +66,7 @@ public class TodoApiController {
 
     //단건 완료/단건 활성화
     @PutMapping("/todo/state/{id}")
-    public void ChangeState(@PathVariable("id") Long id){
+    public void ChangeState(@PathVariable("id") Long id) {
         todoService.changeState(id);
     }
 

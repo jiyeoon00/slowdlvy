@@ -3,7 +3,9 @@ package com.example.todoList.Service;
 import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.TodoRepository;
 import com.example.todoList.domain.WorkStates;
+import com.example.todoList.exception.TodoNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class TodoService {
     /**
      *전체 조회
      */
+    @Transactional(readOnly = true)
     public List<Todo> searchAll(){
         return todoRepository.findAll();
     }
@@ -37,6 +40,7 @@ public class TodoService {
     /**
      *미 완료건 조회
      */
+    @Transactional(readOnly = true)
     public List<Todo> searchActive(){
         return todoRepository.findByStates(WorkStates.ACTIVE);
     }
@@ -44,6 +48,7 @@ public class TodoService {
     /**
      *완료건 조회
      */
+    @Transactional(readOnly = true)
     public List<Todo> searchCompleted(){ return todoRepository.findByStates(WorkStates.COMPLETED); }
 
     /**
@@ -65,17 +70,17 @@ public class TodoService {
      */
     //public void Update(Long id, String workTitle){todoRepository.updateTodo(id, workTitle);}
     public void Update(Long id, String workTitle){
-        Optional<Todo> todo = todoRepository.findById(id);
-        todo.get().setWorkTitle(workTitle);
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException());
+        todo.setWorkTitle(workTitle);
     }
 
     /**
      *단건 완료/단건 활성화
      */
     //public void changeState(Long id){todoRepository.changeState(id); }
-    public void changeState(Long id){
-        Optional<Todo> todo = todoRepository.findById(id);
-        todo.get().change();
+    public void changeState(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(()-> new TodoNotFoundException());
+        todo.change();
     }
 
     /**

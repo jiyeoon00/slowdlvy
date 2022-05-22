@@ -9,8 +9,11 @@ import javax.persistence.*;
 @Getter @Setter
 public class Todo {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Version
+    private int version;
 
     private String workTitle;
 
