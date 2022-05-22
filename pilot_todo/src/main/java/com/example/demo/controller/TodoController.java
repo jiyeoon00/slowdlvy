@@ -35,7 +35,7 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/todo")
+    @PutMapping("/todo")
     public BaseResponse<String> updateTodo(@RequestParam Long id, @RequestBody TodoVO todoVO){
         try{
             todoService.updateById(id, todoVO);
@@ -45,7 +45,7 @@ public class TodoController {
         }
     }
 
-    @PutMapping("/todo")
+    @DeleteMapping("/todo")
     public BaseResponse<String> deleteTodo(@RequestParam Long id){
         try{
             todoService.deleteById(id);
@@ -55,6 +55,15 @@ public class TodoController {
         }
     }
 
+    @PutMapping("/todo/activation")
+    public BaseResponse<String> activateTodo(@RequestParam Long id){
+        try{
+            todoService.activateById(id);
+            return new BaseResponse<>(String.valueOf("activation change success"));
+        }catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
     /**
      * JdbcTemplate ver.

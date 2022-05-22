@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,10 +20,13 @@ public class TodoVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     private String content;
+    @Column(columnDefinition = "boolean default false")
+    private boolean checked;
 
     @Builder
-    public TodoVO(LocalDateTime createdAt, String content){
+    public TodoVO(LocalDateTime createdAt, String content, boolean checked){
         this.createdAt = createdAt;
         this.content = content;
+        this.checked = checked;
     }
 }

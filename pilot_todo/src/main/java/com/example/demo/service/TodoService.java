@@ -43,7 +43,8 @@ public class TodoService {
             if(e.isPresent()) {
                 e.get().setContent(todo.getContent());
                 e.get().setCreatedAt(todo.getCreatedAt());
-                todoRepository.save(todo);
+                e.get().setChecked(todo.isChecked());
+                todoRepository.save(e.get());
             }
         }catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
@@ -71,6 +72,21 @@ public class TodoService {
         }
     }
 
+    // 활성화 변경
+    @Transactional
+    public void activateById(Long id) throws BaseException {
+        try{
+            Optional<TodoVO> e = todoRepository.findById(id);
+
+            if(e.isPresent()) {
+                if (!e.get().isChecked()) e.get().setChecked(true);
+                else e.get().setChecked(false);
+                todoRepository.save(e.get());
+            }
+        }catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
     /**
      * JdbcTemplate ver.
      *
