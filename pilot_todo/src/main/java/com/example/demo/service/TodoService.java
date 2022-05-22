@@ -17,7 +17,63 @@ import static com.example.demo.domain.BaseResponseStatus.DATABASE_ERROR;
 @Service
 @AllArgsConstructor
 public class TodoService {
+    /**
+     *  JPA ver.
+     */
 
+    private final TodoRepository todoRepository;
+
+    // 목록 불러오기
+    public List<TodoVO> findAll() throws BaseException {
+        try{
+            List<TodoVO> todos = new ArrayList<>();
+            todoRepository.findAll().forEach(e -> todos.add(e));
+            return todos;
+        }catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 수정
+    @Transactional
+    public void updateById(Long id, TodoVO todo) throws BaseException {
+        try{
+            Optional<TodoVO> e = todoRepository.findById(id);
+
+            if(e.isPresent()) {
+                e.get().setContent(todo.getContent());
+                e.get().setCreatedAt(todo.getCreatedAt());
+                todoRepository.save(todo);
+            }
+        }catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 생성
+    @Transactional
+    public TodoVO save(TodoVO todo) throws BaseException {
+        try{
+            todoRepository.save(todo);
+            return todo;
+        }catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 삭제
+    @Transactional
+    public void deleteById(Long id) throws BaseException {
+        try{
+            todoRepository.deleteById(id);
+        }catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    /**
+     * JdbcTemplate ver.
+     *
 
     private final JdbcTemplateTodoRepository jdbcTemplateTodoRepository;
 
@@ -56,5 +112,5 @@ public class TodoService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    */
 }

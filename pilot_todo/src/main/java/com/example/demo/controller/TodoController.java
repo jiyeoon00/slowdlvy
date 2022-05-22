@@ -13,7 +13,52 @@ import java.util.List;
 public class TodoController {
     private TodoService todoService;
 
+    /**
+     * JPA ver.
+     */
+    
+    @GetMapping("/todo")
+    public BaseResponse<List<TodoVO>> getTodoRes(){
+        try{
+            return new BaseResponse<>(todoService.findAll());
+        }catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
+    @PostMapping("/todo")
+    public BaseResponse<TodoVO> createTodo(@RequestBody TodoVO todoVO){
+        try{
+            return new BaseResponse<>(todoService.save(todoVO));
+        }catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @DeleteMapping("/todo")
+    public BaseResponse<String> updateTodo(@RequestParam Long id, @RequestBody TodoVO todoVO){
+        try{
+            todoService.updateById(id, todoVO);
+            return new BaseResponse<>(String.valueOf("update success"));
+        }catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @PutMapping("/todo")
+    public BaseResponse<String> deleteTodo(@RequestParam Long id){
+        try{
+            todoService.deleteById(id);
+            return new BaseResponse<>(String.valueOf("delete success"));
+        }catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    /**
+     * JdbcTemplate ver.
+     *
 
     @GetMapping("/todo")
     public BaseResponse<List<TodoResDTO>> getTodoRes(){
@@ -52,5 +97,5 @@ public class TodoController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
+    */
 }
