@@ -21,31 +21,21 @@ public class Todo {
 
     private String content;
 
-    @Convert(converter = BooleanToYNConverter.class)
-    private Boolean isComplete; // 완료 및 활성화
+    @Enumerated
+    private State state; // 완료 및 활성화
+
+    @Version
+    private Integer version;
+
 
     // update
     public void update(String content){
         this.content = content;
     }
-    public void update(Boolean isComplete){
-        if(isComplete)
-            this.isComplete = false;
-        else
-            this.isComplete = true;
+
+    public void update(){
+        this.state = this.state.equals(State.ACTIVE) ? State.COMPLETE : State.ACTIVE;
     }
 
 }
 
-@Converter
-class BooleanToYNConverter implements AttributeConverter<Boolean, String> {
-    @Override
-    public String convertToDatabaseColumn(Boolean attribute) {
-        return (attribute!=null && attribute) ? "Y":"N";
-    }
-
-    @Override
-    public Boolean convertToEntityAttribute(String dbData) {
-        return "Y".equals(dbData);
-    }
-}
