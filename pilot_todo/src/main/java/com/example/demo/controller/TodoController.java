@@ -35,8 +35,8 @@ public class TodoController {
         }
     }
 
-    @PutMapping("/todo")
-    public BaseResponse<String> updateTodo(@RequestParam Long id, @RequestBody TodoVO todoVO){
+    @PutMapping("/todo/{id}")
+    public BaseResponse<String> updateTodo(@PathVariable Long id, @RequestBody TodoVO todoVO){
         try{
             todoService.updateById(id, todoVO);
             return new BaseResponse<>(String.valueOf("update success"));
@@ -45,8 +45,8 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/todo")
-    public BaseResponse<String> deleteTodo(@RequestParam Long id){
+    @DeleteMapping("/todo/{id}")
+    public BaseResponse<String> deleteTodo(@PathVariable Long id){
         try{
             todoService.deleteById(id);
             return new BaseResponse<>(String.valueOf("delete success"));
@@ -55,8 +55,8 @@ public class TodoController {
         }
     }
 
-    @PutMapping("/todo/activation")
-    public BaseResponse<String> activateTodo(@RequestParam Long id){
+    @PutMapping("/todo/state/{id}")
+    public BaseResponse<String> activateTodo(@PathVariable Long id){
         try{
             todoService.activateById(id);
             return new BaseResponse<>(String.valueOf("activation change success"));
