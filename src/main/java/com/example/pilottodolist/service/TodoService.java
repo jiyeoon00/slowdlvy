@@ -48,10 +48,13 @@ public class TodoService {
      */
     @Transactional
     public void changeProgress(Long id) {
-        repository.findById(id)
-                .orElseThrow(NotFoundException::new)
-                .changeProgress();
-
+        try {
+            repository.findById(id)
+                    .orElseThrow(NotFoundException::new)
+                    .changeProgress();
+        } catch(ObjectOptimisticLockingFailureException e) {
+            throw new ObjectOptimisticLockingFailureException(ErrorCode.CONCURRENT_UPDATE_FAILURE.getMsg(), e.getCause());
+        }
     }
 
     /**
