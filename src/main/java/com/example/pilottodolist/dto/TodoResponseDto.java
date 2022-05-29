@@ -36,7 +36,7 @@ public class TodoResponseDto {
         private String currentAllState;
 
         public ALLUPDATE(String currentAllState) {
-            this.currentAllState = (currentAllState.equals("ACTIVE")) ? "COMPLETED" : "ACTIE";
+            this.currentAllState = (currentAllState.equals("ACTIVE")) ? "COMPLETED" : "ACTIVE";
         }
     }
 }

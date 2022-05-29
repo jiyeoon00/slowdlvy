@@ -3,6 +3,8 @@ package com.example.pilottodolist.service;
 import com.example.pilottodolist.domain.Progress;
 import com.example.pilottodolist.domain.Todo;
 import com.example.pilottodolist.dto.TodoRequestDto;
+import com.example.pilottodolist.exception.ErrorCode;
+import com.example.pilottodolist.exception.dto.ErrorResponse;
 import com.example.pilottodolist.repository.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -12,8 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -40,8 +47,14 @@ class TodoServiceTest {
         final ExecutorService executor = Executors.newFixedThreadPool(2);
 
         //when
-        for (int i = 0; i<2; i++) {
-            executor.execute(() -> todoService.changeProgress(todo.getId()));
+        for (int i = 0; i < 2; i++) {
+            executor.execute(() -> {
+                try {
+                    todoService.changeProgress(todo.getId());
+                } catch(ObjectOptimisticLockingFailureException e) {
+                    log.info("낙관적 락 발생");
+                }
+            });
         }
 
         executor.shutdown();

@@ -6,15 +6,21 @@ import com.example.pilottodolist.dto.DtoFormatter;
 import com.example.pilottodolist.dto.TodoListInfo;
 import com.example.pilottodolist.dto.TodoRequestDto;
 import com.example.pilottodolist.dto.TodoResponseDto;
+import com.example.pilottodolist.exception.ConcurrentWriteException;
+import com.example.pilottodolist.exception.ErrorCode;
 import com.example.pilottodolist.exception.NotFoundException;
+import com.example.pilottodolist.exception.dto.ErrorResponse;
 import com.example.pilottodolist.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.OptimisticLock;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +48,13 @@ public class TodoService {
      */
     @Transactional
     public void changeProgress(Long id) {
-
-        repository.findById(id).orElseThrow(NotFoundException::new).changeProgress();
+        try {
+            repository.findById(id)
+                    .orElseThrow(NotFoundException::new)
+                    .changeProgress();
+        } catch(OptimisticLockingFailureException e) {
+            throw new OptimisticLockingFailureException(ErrorCode.CONCURRENT_UPDATE_FAILURE.getMsg(), e.getCause());
+        }
     }
 
     /**
