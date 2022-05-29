@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ErrorResponse handleOptimisticLock(ObjectOptimisticLockingFailureException ex){
+        System.out.println("충돌감지");
         return ErrorResponse.of(HttpStatus.BAD_REQUEST, "충돌감지");
     }
 }

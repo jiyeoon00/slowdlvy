@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
+
     List<Todo> findByStates(WorkStates states);
 
     void deleteByStates(WorkStates states);
