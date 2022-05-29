@@ -48,13 +48,10 @@ public class TodoService {
      */
     @Transactional
     public void changeProgress(Long id) {
-        try {
-            repository.findById(id)
-                    .orElseThrow(NotFoundException::new)
-                    .changeProgress();
-        } catch(OptimisticLockingFailureException e) {
-            throw new OptimisticLockingFailureException(ErrorCode.CONCURRENT_UPDATE_FAILURE.getMsg(), e.getCause());
-        }
+        repository.findById(id)
+                .orElseThrow(NotFoundException::new)
+                .changeProgress();
+
     }
 
     /**
@@ -71,10 +68,9 @@ public class TodoService {
      * 전체 조회 , 상태별 조회로 나누는 것이 적합하나
      * 이번 프로젝트는 필터링 요소가 상태 외에 없으므로 그냥 한 메소드 안에서 해결되도록 한다.
      */
-    public List<TodoResponseDto.GET> getTodoList(Progress progress) {
+    public List<Todo> getTodoList(Progress progress) {
 
-        return repository.getTodoList(progress)
-                .stream().map(t -> new TodoResponseDto.GET(t)).collect(Collectors.toList());
+        return repository.getTodoList(progress);
     }
 
     /**

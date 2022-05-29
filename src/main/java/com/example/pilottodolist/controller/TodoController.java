@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +52,8 @@ public class TodoController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/todoList")
     public TodoListInfo<TodoResponseDto.GET> getTodoList(@Valid TodoRequestDto.GET request) {
-        List<TodoResponseDto.GET> todoList = todoService.getTodoList(Progress.of(request.getProgress()));
+        List<TodoResponseDto.GET> todoList = todoService.getTodoList(Progress.of(request.getProgress()))
+                .stream().map(t -> new TodoResponseDto.GET(t)).collect(Collectors.toList());
         return new TodoListInfo<>(todoList.size(), todoList);
     }
 
