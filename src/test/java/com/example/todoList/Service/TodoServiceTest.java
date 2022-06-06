@@ -3,6 +3,7 @@ package com.example.todoList.Service;
 import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.TodoRepository;
 import com.example.todoList.domain.WorkStates;
+import com.example.todoList.exception.ErrorCode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ public class TodoServiceTest {
     @BeforeEach
     void setTransactionManager(PlatformTransactionManager transactionManager){
         transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
     }
 
 
@@ -63,14 +64,18 @@ public class TodoServiceTest {
         Long savedId = transactionTemplate.execute((status) -> todoService.add(todo));
         //when
         for (int i=0; i< numberOfThreads; i++){
-                executorService.execute(() -> {
-                    transactionTemplate.execute(status -> {
-                        todoService.Update(savedId, "테스트");
-                        latch.countDown();
-                        return null;
+                    executorService.execute(() -> {
+                        try{
+                            transactionTemplate.execute(status -> {
+                                todoService.Update(savedId, "테스트");
+                                latch.countDown();
+                                return null;
+                            });
+                        }catch (ObjectOptimisticLockingFailureException e){
+                            System.out.println("충돌감지");
+                            //throw new ObjectOptimisticLockingFailureException(ErrorCode.OPTIMISTICLOCK.getDetail(), e.getCause());
+                        };
                     });
-                });
-
         }
         latch.await();
         //then

@@ -3,14 +3,15 @@ package com.example.todoList.Service;
 import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.TodoRepository;
 import com.example.todoList.domain.WorkStates;
-import com.example.todoList.exception.TodoNotFoundException;
+import com.example.todoList.exception.CustomException;
+import com.example.todoList.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -70,8 +71,12 @@ public class TodoService {
      */
     //public void Update(Long id, String workTitle){todoRepository.updateTodo(id, workTitle);}
     public void Update(Long id, String workTitle){
-        Todo todo = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException());
-        todo.setWorkTitle(workTitle);
+        try {
+            Todo todo = todoRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.TODO_NOT_FOUND));
+            todo.setWorkTitle(workTitle);
+        }catch (ObjectOptimisticLockingFailureException e){
+            throw new ObjectOptimisticLockingFailureException(ErrorCode.OPTIMISTICLOCK.getDetail(), e.getCause());
+        }
     }
 
     /**
@@ -79,9 +84,12 @@ public class TodoService {
      */
     //public void changeState(Long id){todoRepository.changeState(id); }
     public void changeState(Long id) {
-        Todo todo = todoRepository.findById(id).orElseThrow(()-> new TodoNotFoundException());
+        Todo todo = todoRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.TODO_NOT_FOUND));
         todo.change();
+
     }
+
+
 
     /**
      * 전체 활성화
