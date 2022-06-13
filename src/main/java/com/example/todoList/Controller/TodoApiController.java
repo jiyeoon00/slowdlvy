@@ -1,6 +1,7 @@
 package com.example.todoList.Controller;
 
 import com.example.todoList.Dto.CreateTodoResponse;
+import com.example.todoList.Dto.InfoTodoResponse;
 import com.example.todoList.Dto.TodoRequest;
 import com.example.todoList.Service.TodoService;
 import com.example.todoList.domain.Todo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,22 +30,30 @@ public class TodoApiController {
         return new CreateTodoResponse(id);
     }
 
-    //전체 목록 조회
+//    //전체 목록 조회
+//    @GetMapping("/todo")
+//    public List<Todo> SearchAll(){
+//        return todoService.searchAll();
+//    }
+//
+//    //목록 중 미 완료건 조회
+//    @GetMapping("/todo/active")
+//    public List<Todo> SearchActive(){
+//        return todoService.searchActive();
+//    }
+//
+//    //목록 중 완료건 조회
+//    @GetMapping("/todo/completed")
+//    public List<Todo> SearchCompleted(){
+//        return todoService.searchCompleted();
+//    }
+
+    //목록 조회 {전체, 미완료건, 완료건}
     @GetMapping("/todo")
-    public List<Todo> SearchAll(){
-        return todoService.searchAll();
-    }
-
-    //목록 중 미 완료건 조회
-    @GetMapping("/todo/active")
-    public List<Todo> SearchActive(){
-        return todoService.searchActive();
-    }
-
-    //목록 중 완료건 조회
-    @GetMapping("/todo/completed")
-    public List<Todo> SearchCompleted(){
-        return todoService.searchCompleted();
+    public List<InfoTodoResponse> FindTodoList(@RequestParam(value = "status", required = false) String status){
+        return todoService.FindTodoByStatus(status).stream()
+                .map(InfoTodoResponse::new)
+                .collect(Collectors.toList());
     }
 
     //단건 삭제

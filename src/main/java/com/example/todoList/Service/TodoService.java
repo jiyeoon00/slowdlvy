@@ -29,28 +29,36 @@ public class TodoService {
     }
 
 
-    /**
-     *전체 조회
-     */
+//    /**
+//     *전체 조회
+//     */
+//    @Transactional(readOnly = true)
+//    public List<Todo> searchAll(){
+//        return todoRepository.findAll();
+//    }
+//
+//
+//    /**
+//     *미 완료건 조회
+//     */
+//    @Transactional(readOnly = true)
+//    public List<Todo> searchActive(){
+//        return todoRepository.findByStates(WorkStates.ACTIVE);
+//    }
+//
+//    /**
+//     *완료건 조회
+//     */
+//    @Transactional(readOnly = true)
+//    public List<Todo> searchCompleted(){ return todoRepository.findByStates(WorkStates.COMPLETED); }
+
     @Transactional(readOnly = true)
-    public List<Todo> searchAll(){
-        return todoRepository.findAll();
+    public List<Todo> FindTodoByStatus(String status){
+        if(status == null){
+            return todoRepository.findAll();
+        }else
+            return todoRepository.findByStates(WorkStates.makeWordStates(status));
     }
-
-
-    /**
-     *미 완료건 조회
-     */
-    @Transactional(readOnly = true)
-    public List<Todo> searchActive(){
-        return todoRepository.findByStates(WorkStates.ACTIVE);
-    }
-
-    /**
-     *완료건 조회
-     */
-    @Transactional(readOnly = true)
-    public List<Todo> searchCompleted(){ return todoRepository.findByStates(WorkStates.COMPLETED); }
 
     /**
      *단건 제거
