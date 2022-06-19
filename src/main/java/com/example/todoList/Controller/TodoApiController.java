@@ -24,9 +24,8 @@ public class TodoApiController {
 
     //할 일 추가
     @PostMapping("/todo")
-    public CreateTodoResponse CreateTodo(@RequestBody @Valid TodoRequest request){
-        Todo todo = new Todo(request.getWorkTitle(), WorkStates.ACTIVE);
-        Long id = todoService.add(todo);
+    public CreateTodoResponse createTodo(@RequestBody @Valid TodoRequest request){
+        Long id = todoService.add(request);
         return new CreateTodoResponse(id);
     }
 
@@ -50,46 +49,46 @@ public class TodoApiController {
 
     //목록 조회 {전체, 미완료건, 완료건}
     @GetMapping("/todo")
-    public List<InfoTodoResponse> FindTodoList(@RequestParam(value = "status", required = false) String status){
-        return todoService.FindTodoByStatus(status).stream()
+    public List<InfoTodoResponse> findTodoList(@RequestParam(value = "status", required = false) String status){
+        return todoService.findTodoByStatus(status).stream()
                 .map(InfoTodoResponse::new)
                 .collect(Collectors.toList());
     }
 
     //단건 삭제
     @DeleteMapping("/todo/{id}")
-    public void DeleteOne(@PathVariable("id") Long id){
+    public void deleteOne(@PathVariable("id") Long id){
         todoService.deleteById(id);
     }
 
     //완료건 전체 삭제
     @DeleteMapping("/todo")
-    public void DeleteOne(){
+    public void deleteCompleted(){
         todoService.deleteCompleted();
     }
 
     //수정
     @PutMapping("/todo/{id}")
-    public void Update(@PathVariable("id") Long id, @RequestBody @Valid TodoRequest request){
-        todoService.Update(id, request.getWorkTitle());
+    public void updateOne(@PathVariable("id") Long id, @RequestBody @Valid TodoRequest request){
+        todoService.update(id, request);
     }
 
     //단건 완료/단건 활성화
     @PutMapping("/todo/state/{id}")
-    public void ChangeState(@PathVariable("id") Long id) {
+    public void changeState(@PathVariable("id") Long id) {
         todoService.changeState(id);
     }
 
     //전체 활성화
     @PutMapping("/todo/active")
-    public void ActiveAll(){
-        todoService.ActiveAllState();
+    public void activeAll(){
+        todoService.activeAllState();
     }
 
     //전체 완료
     @PutMapping("/todo/completed")
-    public void ComplitedAll(){
-        todoService.CompletedAllState();
+    public void completedAll(){
+        todoService.completedAllState();
     }
 
 }

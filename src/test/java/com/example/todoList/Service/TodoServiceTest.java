@@ -1,5 +1,6 @@
 package com.example.todoList.Service;
 
+import com.example.todoList.Dto.TodoRequest;
 import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.TodoRepository;
 import com.example.todoList.domain.WorkStates;
@@ -41,19 +42,6 @@ public class TodoServiceTest {
 
 
     @Test
-    @Transactional
-    public void TODO추가() throws Exception{
-        //given
-        Todo todo = new Todo("과제하기", WorkStates.ACTIVE);
-        //when
-        todoService.add(todo);
-        Long savedId = todoService.add(todo);
-        //then
-        assertEquals(todo.getWorkTitle(), todoRepository.findById(savedId).get().getWorkTitle());
-        assertEquals(todo.getStates(), todoRepository.findById(savedId).get().getStates());
-    }
-
-    @Test
     public void 동시수정테스트() throws Exception{
         //given
         final int numberOfThreads = 3;
@@ -61,13 +49,13 @@ public class TodoServiceTest {
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
 
         Todo todo = new Todo("과제하기", WorkStates.ACTIVE);
-        Long savedId = transactionTemplate.execute((status) -> todoService.add(todo));
+        transactionTemplate.execute((status) -> todoRepository.save(todo));
         //when
         for (int i=0; i< numberOfThreads; i++){
                     executorService.execute(() -> {
                         try{
                             transactionTemplate.execute(status -> {
-                                todoService.Update(savedId, "테스트");
+                                todoService.update(todo.getId(), new TodoRequest("테스트"));
                                 latch.countDown();
                                 return null;
                             });
@@ -79,7 +67,7 @@ public class TodoServiceTest {
         }
         latch.await();
         //then
-        Todo afterTodo = todoRepository.findById(savedId).get();
+        Todo afterTodo = todoRepository.findById(todo.getId()).get();
         assertEquals("수정 되었는지 확인","테스트",afterTodo.getWorkTitle());
         assertEquals("버전확인",1,afterTodo.getVersion());
     }

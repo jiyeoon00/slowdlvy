@@ -1,5 +1,6 @@
 package com.example.todoList.Service;
 
+import com.example.todoList.Dto.TodoRequest;
 import com.example.todoList.domain.Todo;
 import com.example.todoList.domain.TodoRepository;
 import com.example.todoList.domain.WorkStates;
@@ -23,7 +24,8 @@ public class TodoService {
     /**
      * 할 일 추가
      */
-    public Long add(Todo todo){
+    public Long add(TodoRequest request){
+        Todo todo = new Todo(request.getWorkTitle(), WorkStates.ACTIVE);
         todoRepository.save(todo);
         return todo.getId();
     }
@@ -53,7 +55,7 @@ public class TodoService {
 //    public List<Todo> searchCompleted(){ return todoRepository.findByStates(WorkStates.COMPLETED); }
 
     @Transactional(readOnly = true)
-    public List<Todo> FindTodoByStatus(String status){
+    public List<Todo> findTodoByStatus(String status){
         if(status == null){
             return todoRepository.findAll();
         }else
@@ -78,10 +80,10 @@ public class TodoService {
      * todoList 수정
      */
     //public void Update(Long id, String workTitle){todoRepository.updateTodo(id, workTitle);}
-    public void Update(Long id, String workTitle){
+    public void update(Long id, TodoRequest request){
         try {
             Todo todo = todoRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.TODO_NOT_FOUND));
-            todo.setWorkTitle(workTitle);
+            todo.setWorkTitle(request.getWorkTitle());
         }catch (ObjectOptimisticLockingFailureException e){
             throw new ObjectOptimisticLockingFailureException(ErrorCode.OPTIMISTICLOCK.getDetail(), e.getCause());
         }
@@ -102,14 +104,14 @@ public class TodoService {
     /**
      * 전체 활성화
      */
-    public void ActiveAllState(){
+    public void activeAllState(){
         todoRepository.changeAllState(WorkStates.ACTIVE, WorkStates.COMPLETED);
     }
 
     /**
      * 전체 완료
      */
-    public void CompletedAllState(){
+    public void completedAllState(){
         todoRepository.changeAllState(WorkStates.COMPLETED, WorkStates.ACTIVE);
     }
 
