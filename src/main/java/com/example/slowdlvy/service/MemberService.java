@@ -35,13 +35,8 @@ public class MemberService {
             return ErrorResponse.toResponse(ErrorCode.USERNAME_ALREADY_EXISTS);
         }
 
-        Member member = Member.builder()
-                    .username(joinRequest.getUsername())
-                    .password(passwordEncoder.encode(joinRequest.getPassword()))
-                    .nickname("유저_"+(char)((int)(Math.random()*26)+97))
-                    .role(Role.USER)
-                    .provider(Provider.LOCAL)
-                    .build();
+        Member member = new Member(joinRequest.getUsername(), passwordEncoder.encode(joinRequest.getPassword()),Provider.LOCAL);
+        member.setDefaultUser();
 
         memberRepository.save(member);
         return ResponseEntity.ok("회원가입이 성공적으로 완료되었습니다.");

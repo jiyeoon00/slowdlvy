@@ -1,17 +1,12 @@
 package com.example.slowdlvy.domain.member;
 
-import com.example.slowdlvy.controller.Member.dto.MemberRequestDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
-@Builder
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -34,7 +29,20 @@ public class Member {
     private Provider provider;
 
 
-    public Member() {
-
+    public Member(String username, String password, Provider provider){
+        this.username = username;
+        this.password = password;
+        this.provider = provider;
     }
+
+    public void setDefaultUser(){
+        this.nickname = "유저_"+(char)(int)(Math.random()*1000);
+        this.role = Role.USER;
+    }
+
+    public void setDefaultAdmin(){
+        this.nickname = "관리자_"+(char)(int)(Math.random()*1000);
+        this.role = Role.ADMIN;
+    }
+
 }
