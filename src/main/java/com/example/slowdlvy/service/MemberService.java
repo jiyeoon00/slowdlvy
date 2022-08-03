@@ -47,7 +47,7 @@ public class MemberService {
 
         UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        //SecurityContextHolder.getContext().setAuthentication(authenticate);
         /**
          * 토큰 발급 후 response 헤더에 넣어주기
          */
