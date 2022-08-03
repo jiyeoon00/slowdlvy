@@ -1,4 +1,4 @@
-package com.example.slowdlvy.config;
+package com.example.slowdlvy.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
