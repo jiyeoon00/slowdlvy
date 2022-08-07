@@ -19,12 +19,18 @@ public class RefreshToken {
     @Column(name = "REFRESH_TOKEN", updatable = false)
     private String refreshToken;
 
-    public void updateToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-
     public RefreshToken(String username, String refreshToken){
         this.username = username;
         this.refreshToken = refreshToken;
     }
+
+    public void updateToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
+
+    public Boolean isEqual(String Token){
+        return this.refreshToken.equals(Token);
+    }
+
+
 }

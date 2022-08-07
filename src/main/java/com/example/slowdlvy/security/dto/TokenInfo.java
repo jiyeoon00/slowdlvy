@@ -11,4 +11,8 @@ public class TokenInfo {
 
     private String accessToken;
     private String refreshToken;
+
+    public String extractRefreshToken(){
+        return refreshToken.replace("Bearer: ", "");
+    }
 }

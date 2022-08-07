@@ -1,7 +1,5 @@
 package com.example.slowdlvy.security.service;
 
-import com.example.slowdlvy.Exception.CustomException;
-import com.example.slowdlvy.Exception.ErrorCode;
 import com.example.slowdlvy.domain.member.Member;
 import com.example.slowdlvy.domain.member.MemberRepository;
 import com.example.slowdlvy.security.dto.PrincipalDetails;
@@ -11,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package com.example.slowdlvy.security.jwt;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -21,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = extractTokenFromHeader(request);
+        String token = jwtManager.extractTokenFromHeader(request);
         if(token != null && jwtManager.isValidate(token)){
             Authentication authentication = jwtManager.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -29,13 +31,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
-    //토큰이 비어있는지 or Bearer 형식인지 확인 후 토큰 추출해주는 메서드
-    private String extractTokenFromHeader(HttpServletRequest request){
-        String accesstoken = request.getHeader("ACCESSTOKEN");
-        if(accesstoken == null || !accesstoken.startsWith("Bearer")){
-            return null;
-        }else{
-            return accesstoken.replace("Bearer: ", "");
-        }
-    }
+
 }

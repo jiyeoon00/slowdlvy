@@ -31,8 +31,7 @@ public class SecurityConfig {
                 .apply(new MyCustomFilter())
                 .and()
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/auth/join", "/auth/login","/auth/refresh").permitAll()
-                        .antMatchers("/member").access("hasRole('ROLE_USER')")
+                        .antMatchers("/auth/join", "/auth/login","/auth/reissue").permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

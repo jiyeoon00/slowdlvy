@@ -2,6 +2,7 @@ package com.example.slowdlvy.service;
 
 import com.example.slowdlvy.domain.refreshToken.RefreshToken;
 import com.example.slowdlvy.domain.refreshToken.RefreshTokenRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -23,5 +24,20 @@ public class RefreshTokenService {
         } else {
             refreshTokenRepository.save(new RefreshToken(username, refreshToken));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean refreshTokenIsExist(String username, String refreshToken){
+        Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUsername(username);
+        if (findRefreshToken.isPresent()){
+            return findRefreshToken.get().isEqual(refreshToken);
+        }else {
+            return false;
+        }
+    }
+
+    @Transactional
+    public void deleteRefreshToken(String username){
+        refreshTokenRepository.deleteByUsername(username);
     }
 }
