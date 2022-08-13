@@ -49,11 +49,17 @@ public class MemberController {
         return ResponseEntity.ok("로그아웃 완료");
     }
 
-    @GetMapping("home")
-    public ResponseEntity home(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        System.out.println(principalDetails.getUsername());
-        System.out.println(principalDetails.getAuthorities());
-
-        return ResponseEntity.ok("home입니다.");
+    @GetMapping("auth/success")
+    public ResponseEntity success(){
+        return ResponseEntity.ok("로그인 되었습니다.");
     }
+
+//
+//    @GetMapping("home")
+//    public ResponseEntity home(@AuthenticationPrincipal PrincipalDetails principalDetails){
+//        System.out.println(principalDetails.getUsername());
+//        System.out.println(principalDetails.getAuthorities());
+//
+//        return ResponseEntity.ok("home입니다.");
+//    }
 }

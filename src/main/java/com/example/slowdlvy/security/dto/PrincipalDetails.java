@@ -5,19 +5,23 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private final Long id;
-    private final String username;
-    private final String password;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private Long id;
+    private String username;
+    private String password;
+    private Collection<? extends GrantedAuthority> authorities;
+    private Map<String, Object> attributes;
 
+    //일반로그인
     public PrincipalDetails(Member member){
         this.id = member.getId();
         this.username = member.getUsername();
@@ -25,11 +29,22 @@ public class PrincipalDetails implements UserDetails {
         this.authorities = Collections.singletonList(member.getRole());
     }
 
+    //OAuth2로그인
+    public PrincipalDetails(Member member, Map<String, Object> attributes){
+        this.id = member.getId();
+        this.username = member.getUsername();
+        this.authorities = Collections.singletonList(member.getRole());
+        this.attributes = attributes;
+    }
+
     public PrincipalDetails(String username, Collection<? extends GrantedAuthority> authorities){
-        this.id = null;
         this.username = username;
-        this.password = null;
         this.authorities = authorities;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     @Override
@@ -69,4 +84,8 @@ public class PrincipalDetails implements UserDetails {
         return true;
     }
 
+    @Override
+    public String getName() {
+        return null;
+    }
 }

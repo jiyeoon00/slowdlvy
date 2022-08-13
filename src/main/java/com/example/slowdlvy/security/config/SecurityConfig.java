@@ -2,6 +2,10 @@ package com.example.slowdlvy.security.config;
 
 import com.example.slowdlvy.security.jwt.JwtAuthenticationFilter;
 import com.example.slowdlvy.security.jwt.JwtManager;
+import com.example.slowdlvy.security.oauth.OAuth2AuthenticationFailureHandler;
+import com.example.slowdlvy.security.oauth.OAuth2AuthenticationSuccessHandler;
+import com.example.slowdlvy.security.service.PrincipalOauth2UserService;
+import com.example.slowdlvy.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +23,8 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final JwtManager jwtManager;
+    private final PrincipalOauth2UserService principalOauth2UserService;
+    private final RefreshTokenService refreshTokenService;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -28,13 +34,25 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+
                 .apply(new MyCustomFilter())
                 .and()
+
                 .authorizeRequests(authorize -> authorize
                         .antMatchers("/auth/join", "/auth/login","/auth/reissue").permitAll()
                         .anyRequest().authenticated())
+
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService)
+                .and()
+
+                .successHandler(new OAuth2AuthenticationSuccessHandler(jwtManager,refreshTokenService))
+                .failureHandler( new OAuth2AuthenticationFailureHandler())
+                .and()
                 .build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

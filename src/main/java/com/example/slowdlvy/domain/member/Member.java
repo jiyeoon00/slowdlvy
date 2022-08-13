@@ -37,13 +37,6 @@ public class Member {
         this.provider = provider;
     }
 
-    public Member(String username, String password, Provider provider, Role role){
-        this.username = username;
-        this.password = password;
-        this.provider = provider;
-        this.role = role;
-    }
-
 
     public void setDefaultUser(){
         this.nickname = "유저_"+(char)(int)(Math.random()*1000);

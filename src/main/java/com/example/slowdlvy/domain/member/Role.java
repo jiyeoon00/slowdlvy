@@ -14,10 +14,6 @@ public enum Role implements GrantedAuthority {
     private final String authority;
     private final String title;
 
-    public static Role valueOfCaseInsensitively(String authority) {
-        return valueOf(StringUtils.uncapitalize(authority));
-    }
-
 
     @Override
     public String getAuthority() {
