@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .and()
 
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/auth/join", "/auth/login","/auth/reissue").permitAll()
+                        .antMatchers("/auth/join", "/auth/login","/auth/reissue","/cart").permitAll()
                         .anyRequest().authenticated())
 
                 .oauth2Login()
