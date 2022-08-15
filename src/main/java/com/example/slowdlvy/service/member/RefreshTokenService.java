@@ -1,4 +1,4 @@
-package com.example.slowdlvy.service;
+package com.example.slowdlvy.service.member;
 
 import com.example.slowdlvy.domain.refreshToken.RefreshToken;
 import com.example.slowdlvy.domain.refreshToken.RefreshTokenRepository;

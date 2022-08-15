@@ -3,7 +3,7 @@ package com.example.slowdlvy.controller.Member;
 import com.example.slowdlvy.controller.Member.dto.MemberRequestDto;
 import com.example.slowdlvy.security.dto.PrincipalDetails;
 import com.example.slowdlvy.security.dto.TokenInfo;
-import com.example.slowdlvy.service.MemberService;
+import com.example.slowdlvy.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -5,7 +5,7 @@ import com.example.slowdlvy.security.jwt.JwtManager;
 import com.example.slowdlvy.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.example.slowdlvy.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.example.slowdlvy.security.service.PrincipalOauth2UserService;
-import com.example.slowdlvy.service.RefreshTokenService;
+import com.example.slowdlvy.service.member.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .and()
 
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/auth/join", "/auth/login","/auth/reissue","/cart").permitAll()
+                        .antMatchers("/auth/join", "/auth/login","/auth/reissue","/carts/**").permitAll()
                         .anyRequest().authenticated())
 
                 .oauth2Login()

@@ -32,5 +32,13 @@ public class Cart {
     public List<CartLineItem> getCartLineItems(){
         return this.cartLineItems;
     }
+
+    public Boolean isEqualByShop(Long shopId){
+        return this.shopId.equals(shopId);
+    }
+
+    public Long getId(){
+        return this.id;
+    }
 }
 

@@ -1,4 +1,4 @@
-package com.example.slowdlvy.service;
+package com.example.slowdlvy.service.member;
 
 import com.example.slowdlvy.Exception.CustomException;
 import com.example.slowdlvy.Exception.ErrorCode;
@@ -10,8 +10,6 @@ import com.example.slowdlvy.domain.member.Provider;
 import com.example.slowdlvy.security.dto.PrincipalDetails;
 import com.example.slowdlvy.security.dto.TokenInfo;
 import com.example.slowdlvy.security.jwt.JwtManager;
-import io.jsonwebtoken.Claims;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

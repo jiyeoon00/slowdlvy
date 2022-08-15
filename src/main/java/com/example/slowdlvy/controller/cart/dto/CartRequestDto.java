@@ -1,5 +1,6 @@
 package com.example.slowdlvy.controller.cart.dto;
 
+import com.example.slowdlvy.domain.cart.Cart;
 import com.example.slowdlvy.domain.cart.CartItemOption;
 import com.example.slowdlvy.domain.cart.CartItemOptionGroup;
 import com.example.slowdlvy.domain.cart.CartLineItem;
@@ -13,12 +14,16 @@ public class CartRequestDto {
     @Getter
     public static class addCart{
         private Long shopId;
-        private Long userId;
+        private Long memberId;
         private Long menuId;
         private String menuName;
         private int menuPrice;
         private int menuQuantity;
         private List<addCartItemOptionGroup> addCartItemOptionGroups;
+
+        public Cart toCart(){
+            return new Cart(shopId,memberId);
+        }
 
         public CartLineItem toCartLineItem(){
             return new CartLineItem(menuName, menuPrice, menuQuantity, addCartItemOptionGroups.stream().map(a->a.toCartItemOptionGroup()).collect(Collectors.toList()));
