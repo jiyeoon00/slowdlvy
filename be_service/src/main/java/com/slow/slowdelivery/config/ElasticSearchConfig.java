@@ -1,6 +1,5 @@
-package com.slow.slowdelivery.configuration;
+package com.slow.slowdelivery.config;
 
-import com.slow.slowdelivery.shop.domain.search.ShopSearchRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
