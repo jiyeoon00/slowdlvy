@@ -20,7 +20,7 @@ public class Cart {
     private Long shopId;
     private Long memberId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
     private List<CartLineItem> cartLineItems = new ArrayList<>();
 
     @Builder
@@ -36,6 +36,7 @@ public class Cart {
     public Boolean isEqualByShop(Long shopId){
         return this.shopId.equals(shopId);
     }
+
 
     public Long getId(){
         return this.id;

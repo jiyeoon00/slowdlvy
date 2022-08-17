@@ -3,10 +3,12 @@ package com.example.slowdlvy.service.cart;
 import com.example.slowdlvy.controller.cart.dto.CartRequestDto;
 import com.example.slowdlvy.domain.cart.Cart;
 import com.example.slowdlvy.domain.cart.CartLineItem;
+import com.example.slowdlvy.domain.cart.CartLineItemRepository;
 import com.example.slowdlvy.domain.cart.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final CartLineItemRepository cartLineItemRepository;
 
     /**
      * <장바구니 추가 과정>
@@ -31,6 +34,7 @@ public class CartService {
             Cart findCart = cartOptional.get();
             if(findCart.isEqualByShop(cartRequest.getShopId())){
                 cartLineItem.setCart(findCart);
+                cartLineItemRepository.save(cartLineItem);
                 return findCart.getId();
             }else{
                 cartRepository.delete(findCart);
@@ -39,7 +43,10 @@ public class CartService {
         Cart newCart = cartRequest.toCart();
         cartLineItem.setCart(newCart);
         cartRepository.save(newCart);
+        cartLineItemRepository.save(cartLineItem);
         return newCart.getId();
     }
+
+
 
 }
