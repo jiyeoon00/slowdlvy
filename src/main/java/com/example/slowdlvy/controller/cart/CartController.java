@@ -21,4 +21,13 @@ public class CartController {
          */
     }
 
+    @DeleteMapping("carts/{cartId}/{cartLineItemId}")
+    public ResponseEntity remove(@PathVariable Long cartId, @PathVariable Long cartLineItemId){
+        cartService.remove(cartLineItemId);
+        cartService.isEmptyRemove(cartId);
+        return ResponseEntity.ok("삭제 완료");
+        /**
+         * 리턴시 장바구니_INFO 나타내주는 URL로 연결해주도록 추후 수정해주기
+         */
+    }
 }

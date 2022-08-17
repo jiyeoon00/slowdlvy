@@ -47,6 +47,24 @@ public class CartService {
         return newCart.getId();
     }
 
+    /**
+     * <장바구니 삭제 과정>
+     * CartLineItem 삭제 후에 만약 Cart가 담긴 상품이 없이 빈 상태라면 Cart도 삭제해준다.
+     */
+    @Transactional
+    public void remove(Long cartLineItemId){
+        cartLineItemRepository.deleteById(cartLineItemId);
+    }
+
+    @Transactional
+    public void isEmptyRemove(Long cartId){
+        Optional<Cart> cartOptional = cartRepository.findById(cartId);
+        if(cartOptional.isPresent()){
+            if(cartOptional.get().isEmptyCart()){
+                cartRepository.deleteById(cartId);
+            }
+        }
+    }
 
 
 }

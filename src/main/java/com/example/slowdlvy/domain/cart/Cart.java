@@ -37,6 +37,13 @@ public class Cart {
         return this.shopId.equals(shopId);
     }
 
+    public Boolean isEmptyCart(){
+        if(this.cartLineItems.size()==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public Long getId(){
         return this.id;
