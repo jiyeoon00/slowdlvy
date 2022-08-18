@@ -1,6 +1,6 @@
-package com.slow.slowdelivery.search.infrastructure.repository;
+package com.slow.slowdelivery.elasticsearch.infrastructure.repository;
 
-import com.slow.slowdelivery.search.domain.SearchDocument;
+import com.slow.slowdelivery.elasticsearch.domain.SearchDocument;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

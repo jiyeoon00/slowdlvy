@@ -1,13 +1,14 @@
-package com.slow.slowdelivery.search.presentation;
+package com.slow.slowdelivery.elasticsearch.presentation;
 
 import com.slow.slowdelivery.commons.exception.CustomException;
 import com.slow.slowdelivery.commons.exception.ErrorCode;
-import com.slow.slowdelivery.search.application.SearchService;
-import com.slow.slowdelivery.search.domain.SearchDocument;
+import com.slow.slowdelivery.elasticsearch.application.SearchService;
+import com.slow.slowdelivery.elasticsearch.domain.SearchDocument;
+import com.slow.slowdelivery.elasticsearch.presentation.dto.SearchRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,19 +26,12 @@ public class SearchController {
         return ResponseEntity.ok(200);
     }
 
-    @GetMapping ("/searchMenu")
-    public List<SearchDocument> searchMenuDocs(@RequestParam String name){
-        List<SearchDocument> searchDocuments = searchService.searchMenu(name);
+    @GetMapping("/search")
+    public List<SearchDocument> searchAll(@RequestBody SearchRequestDto searchRequestDto){
+        List<SearchDocument> searchDocuments = searchService.search(searchRequestDto.toSearchDto());
         if(searchDocuments.isEmpty())
-            throw new CustomException(ErrorCode.MENU_DOCS_NOT_FOUND);
-        return searchDocuments;
-    }
+            throw new CustomException(ErrorCode.KEYWORD_NOT_FOUND);
 
-    @GetMapping("/searchShop")
-    public List<SearchDocument> searchShopDocs(@RequestParam String name){
-        List<SearchDocument> searchDocuments = searchService.searchShop(name);
-        if(searchDocuments.isEmpty())
-            throw new CustomException(ErrorCode.SHOP_DOCS_NOT_FOUND);
         return searchDocuments;
     }
 

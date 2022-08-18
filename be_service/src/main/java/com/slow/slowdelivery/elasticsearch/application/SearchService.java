@@ -1,18 +1,19 @@
-package com.slow.slowdelivery.search.application;
+package com.slow.slowdelivery.elasticsearch.application;
 
 import com.slow.slowdelivery.commons.exception.CustomException;
 import com.slow.slowdelivery.commons.exception.ErrorCode;
-import com.slow.slowdelivery.search.domain.SearchDocument;
-import com.slow.slowdelivery.search.infrastructure.repository.SearchRepository;
+import com.slow.slowdelivery.elasticsearch.application.dto.SearchDto;
+import com.slow.slowdelivery.elasticsearch.domain.SearchDocument;
+import com.slow.slowdelivery.elasticsearch.infrastructure.repository.SearchRepository;
 import com.slow.slowdelivery.shop.domain.Menu;
 import com.slow.slowdelivery.shop.domain.Shop;
 import com.slow.slowdelivery.shop.infra.MenuRepository;
 import com.slow.slowdelivery.shop.infra.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,8 @@ public class SearchService {
     private final MenuRepository menuRepository;
     private final ShopRepository shopRepository;
 
-    // RDB에 있는 data -> ES DB에 저장
+    // RDB에 있는 data -> ES document에 저장(동기화)
+    @Transactional
     public Iterable<SearchDocument> saveData(){
         List<Shop> shopList = shopRepository.findAll();
         if(shopList.isEmpty()) throw new CustomException(ErrorCode.SHOP_NOT_FOUND);
@@ -40,16 +42,9 @@ public class SearchService {
         return searchRepository.findAll();
     }
 
-    // 메뉴 검색
-    public List<SearchDocument> searchMenu(String menuName){
-        return searchRepository.findByMenuName(menuName);
+    // 가게/ 메뉴 통합 검색
+    public List<SearchDocument> search(SearchDto searchDto){
+        return searchRepository.findByKeyword(searchDto.getKeyword());
     }
-
-    // 가게 검색
-    public List<SearchDocument> searchShop(String shopName){
-        return searchRepository.findByShopName(shopName);
-    }
-
-
 }
 

@@ -17,8 +17,7 @@ public enum ErrorCode {
     MENU_NOT_FOUND(NOT_FOUND, "메뉴정보를 찾을 수 없습니다"),
 
     DOCS_NOT_FOUND(NOT_FOUND, "document가 존재하지 않습니다"),
-    MENU_DOCS_NOT_FOUND(NOT_FOUND, "검색한 메뉴가 존재하지 않습니다"),
-    SHOP_DOCS_NOT_FOUND(NOT_FOUND, "검색한 가게가 존재하지 않습니다"),
+    KEYWORD_NOT_FOUND(NOT_FOUND, "검색한 가게 또는 메뉴가 존재하지 않습니다"),
 
     /* 500 Internal Server Error */
 

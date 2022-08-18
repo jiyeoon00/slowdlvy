@@ -1,4 +1,4 @@
-package com.slow.slowdelivery.search.domain;
+package com.slow.slowdelivery.elasticsearch.domain;
 
 import com.slow.slowdelivery.shop.domain.Menu;
 import lombok.*;
