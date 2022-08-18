@@ -11,3 +11,12 @@ spring:
       format_sql: true
     show-sql: true
     generate-ddl: true
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch:
+            client:
+              WIRE: trace
