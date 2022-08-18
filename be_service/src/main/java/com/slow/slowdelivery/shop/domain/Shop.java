@@ -7,20 +7,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
+@Builder
+@Table(name = "shop")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shop_id")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "shop_name", nullable = false, unique = true)
     private String name;
 
-    @Builder
-    public Shop(String name){
-        this.name = name;
-    }
+
 }

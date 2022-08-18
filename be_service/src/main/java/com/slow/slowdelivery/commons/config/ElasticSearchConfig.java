@@ -1,4 +1,4 @@
-package com.slow.slowdelivery.config;
+package com.slow.slowdelivery.commons.config;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Configuration;
