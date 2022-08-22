@@ -1,8 +1,31 @@
 {
-  "analysis": {
-    "analyzer": {
-      "korean": {
-        "type": "nori"
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "shopId": {
+        "type": "long"
+      },
+      "shopName": {
+        "type": "keyword",
+        "analyzer": "korean"
+      },
+      "minOrderPrice": {
+        "type": "integer"
+      },
+      "category": {
+        "type": "keyword",
+        "analyzer": "korean"
+      },
+      "rating": {
+        "type": "float"
+      },
+      "properties": {
+        "menu": {
+          "menuId": {"type":  "long"},
+          "menuName": {"type":  "keyword", "analyzer": "korean"}
+        }
       }
     }
   }
