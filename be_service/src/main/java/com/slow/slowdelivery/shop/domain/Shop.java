@@ -19,5 +19,9 @@ public class Shop {
     @Column(name = "shop_name", nullable = false, unique = true)
     private String name;
 
+    private int minOrderPrice;
+    private String category;
+    private float rating;
+
 
 }

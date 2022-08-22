@@ -29,6 +29,9 @@ public class SearchDocument {
 
     private Long shopId;
     private String shopName;
+    private int minOrderPrice;
+    private String category;
+    private Float rating;
 
     @Field(type = FieldType.Object)
     private List<MenuDocument> menu;
