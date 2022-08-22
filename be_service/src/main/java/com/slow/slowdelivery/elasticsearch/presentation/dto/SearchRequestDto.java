@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SearchRequestDto {
     private String keyword;
+    private String sorter;
 
     public SearchDto toSearchDto(){
-        return SearchDto.builder().keyword(keyword).build();
+        return SearchDto.builder().keyword(keyword).sorter(sorter).build();
     }
 }

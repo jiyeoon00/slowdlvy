@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,12 +28,10 @@ public class SearchController {
     }
 
     @GetMapping("/search")
-    public List<SearchDocument> searchAll(@RequestBody SearchRequestDto searchRequestDto){
-        List<SearchDocument> searchDocuments = searchService.search(searchRequestDto.toSearchDto());
-        if(searchDocuments.isEmpty())
+    public List searchWithSorting(@RequestBody SearchRequestDto searchRequestDto) throws IOException {
+        List list = searchService.search(searchRequestDto.toSearchDto());
+        if(list.size() == 0)
             throw new CustomException(ErrorCode.KEYWORD_NOT_FOUND);
-
-        return searchDocuments;
+        return list;
     }
-
 }

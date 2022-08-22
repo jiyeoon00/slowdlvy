@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -36,15 +37,21 @@ public class SearchService {
                     .id(shopList.get(i).getId())
                     .shopId(shopList.get(i).getId())
                     .shopName(shopList.get(i).getName())
-                    .menu(SearchDocument.toMenuDocument(menuListInSameShop)).build());
+                    .minOrderPrice(shopList.get(i).getMinOrderPrice())
+                    .category(shopList.get(i).getCategory())
+                    .rating(shopList.get(i).getRating())
+                    .menu(SearchDocument.toMenuDocument(menuListInSameShop))
+                    .build());
         }
 
         return searchRepository.findAll();
     }
 
     // 가게/ 메뉴 통합 검색
-    public List<SearchDocument> search(SearchDto searchDto){
-        return searchRepository.findByKeyword(searchDto.getKeyword());
+    public List search(SearchDto searchDto) throws IOException {
+        return searchRepository.findByKeyword(searchDto.getKeyword(), searchDto.getSorter());
     }
+
+
 }
 
