@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +28,9 @@ public class CustomSearchRepositoryImpl implements CustomSearchRepository {
     public List<Object> findByKeyword(String keyword, String sortingCriteria) throws IOException {
         // 검색 (가게명, 메뉴명, 카테고리)
         QueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .should(QueryBuilders.multiMatchQuery(keyword, "shopName", "menu.menuName","category"));
+                .should(QueryBuilders.matchPhraseQuery("shopName", keyword))
+                .should(QueryBuilders.matchPhraseQuery("menu.menuName", keyword))
+                .should(QueryBuilders.matchQuery("category", keyword));
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder().query(boolQueryBuilder);
 
@@ -42,6 +45,7 @@ public class CustomSearchRepositoryImpl implements CustomSearchRepository {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] hits = searchResponse.getHits().getHits();
 
+        Arrays.stream(hits).forEach(System.out::println);
 
         List<Object> searchResponseList = new ArrayList<>();
 
