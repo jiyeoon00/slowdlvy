@@ -2,27 +2,19 @@ package com.slow.slowdelivery.elasticsearch.domain;
 
 import com.slow.slowdelivery.shop.domain.Menu;
 import lombok.*;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
+
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Object field type
- * {“Doc id” : “ ”,
- * “Shop id” : “ “,
- * “Shop menu” : “ “,
- * “Menu”: [ {“menuId” : “ ”, “menuName”: “ “}, …]
- * }
- * */
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Document(indexName = "slowdelivery")
+@Setting(settingPath = "elastic/shop-setting.json")
+@Mapping(mappingPath = "elastic/shop-mapping.json")
 public class SearchDocument {
     @Id
     private Long id;

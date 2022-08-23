@@ -1,31 +1,28 @@
 {
-  "mappings": {
-    "properties": {
-      "id": {
-        "type": "long"
-      },
-      "shopId": {
-        "type": "long"
-      },
-      "shopName": {
-        "type": "keyword",
-        "analyzer": "korean"
-      },
-      "minOrderPrice": {
-        "type": "integer"
-      },
-      "category": {
-        "type": "keyword",
-        "analyzer": "korean"
-      },
-      "rating": {
-        "type": "float"
-      },
+  "properties": {
+    "id": {
+      "type": "long"
+    },
+    "shopId": {
+      "type": "long"
+    },
+    "shopName": {
+      "type": "text",
+      "analyzer": "nori_analyzer"
+    },
+    "minOrderPrice": {
+      "type": "integer"
+    },
+    "category": {
+      "type": "keyword"
+    },
+    "rating": {
+      "type": "float"
+    },
+    "menu": {
       "properties": {
-        "menu": {
-          "menuId": {"type":  "long"},
-          "menuName": {"type":  "keyword", "analyzer": "korean"}
-        }
+        "menuId": {"type":  "long"},
+        "menuName": {"type":  "text", "analyzer": "nori_analyzer"}
       }
     }
   }
